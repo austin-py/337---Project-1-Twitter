@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9c4c2b40-cacc-40b4-9795-da3ccccf29ff" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/data/test_tweets.txt" afterDir="false" />
-    </list>
+    <list default="true" id="9c4c2b40-cacc-40b4-9795-da3ccccf29ff" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,6 +31,7 @@
       <updated>1650400857077</updated>
       <workItem from="1650400860080" duration="18000" />
       <workItem from="1650420376731" duration="650000" />
+      <workItem from="1650421067745" duration="303000" />
     </task>
     <servers />
   </component>
@@ -49,5 +48,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

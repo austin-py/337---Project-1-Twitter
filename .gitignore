@@ -5,3 +5,5 @@ __pycache__/
 .idea/workspace.xml
 .idea/workspace.xml
 .idea/workspace.xml
+classes.pyc
+txt_reader.pyc

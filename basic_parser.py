@@ -1,7 +1,50 @@
 from classes import *
 import re
-from txt_reader import load_tweets
+from json_reader import load_tweets
 
+# Find the following:
+# Host(s) (for the entire ceremony)
+# Award Names
+# Presenters, mapped to awards*
+# Nominees, mapped to awards*
+# Winners, mapped to awards*
+
+# Get host
+def get_host(input_tweet):
+    host_forms = ['host', 'hosts', 'hosting']
+    words = input_tweet.split()
+    for w in words:
+        for h in host_forms:
+            if w.lower() == h:
+                print(input_tweet)
+
+# Get award names
+def get_award(input_tweet):
+    award_names = list()
+    words = input_tweet.split()
+    for w in words:
+        if w.lower() == 'best':
+            print(input_tweet)
+
+# Get presenter
+def get_presenter(input_tweet):
+    presenters = list()
+    words = input_tweet.split()
+    for w in words:
+        if w.lower() == 'present':
+            print(input_tweet)
+
+# Get Nominee
+def get_nominee(input_tweet):
+    nominee_forms = ['nominee', 'nominated']
+    nominee = list()
+    words = input_tweet.split()
+    for w in words:
+        for n in nominee_forms:
+            if w.lower() == n:
+                print(input_tweet)
+
+# Get winner
 def get_winner(input_tweet):
     win_forms = ['win', 'wins', 'won', 'winning']
     winner = ''
@@ -11,22 +54,16 @@ def get_winner(input_tweet):
         curr_word = words[i]
         for form in win_forms:
             if curr_word.lower() == form.lower():
-                if i < len(words) - 3:
-                    award = words[i+1] + ' ' + words[i+2]
-                else:
-                    award = ''
+                print(input_tweet)
 
-                if i > 0:
-                    winner = words[i-1]
-                else:
-                    winner = ''
-                return winner, award
 
 def main():
     tweets = load_tweets()
     for t in tweets:
-        winner, award = get_winner(t)
-        print('winner for {} is {}'.format(award, winner))
+        text = t['text']
+        get_nominee(text)
+
+
 
 if __name__ == '__main__':
     main()

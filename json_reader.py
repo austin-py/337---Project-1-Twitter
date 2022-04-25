@@ -19,8 +19,7 @@ if __name__ == '__main__':
     print(type(tweets[0]))
     print('text' in tweets[0])
     print(tweets[0])
-    print()
-
-    tweets = load_tweets('gg2013.json')
-    #demo print
-    print(tweets[0])
+    print('Total tweets: {}'.format(len(tweets)))
+    unique_user_ids = list()
+    print(tweets[0]['user'])
+    print(tweets[0]['user']['id'])

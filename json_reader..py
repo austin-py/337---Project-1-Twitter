@@ -22,11 +22,7 @@ if __name__ == '__main__':
     print('text' in tweets[0])
     print(tweets[0])
 
-    print('load gg2013.json')
+    print('\nload gg2013.json')
     tweets = load_tweets('gg2013.json')
     # demo print
-    print(type(tweets))
-    print('text' in tweets)
-    print(type(tweets[0]))
-    print('text' in tweets[0])
     print(tweets[0])

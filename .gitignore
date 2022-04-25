@@ -13,3 +13,4 @@ data/.DS_Store
 data/gg2015.json
 .idea/workspace.xml
 .idea/workspace.xml
+*.xml

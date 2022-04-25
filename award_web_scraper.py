@@ -3,8 +3,13 @@
 Current Status:
     - Basically none of it works, been a little bit since I scraped and google is a bit annoying due to the size of the 
       webpage, but beginning to get re-aquainted. 
-"""
 
+    - Pausing work because I think we might be supposed to get the award names from the tweets as 
+    well so not sure we are allowed to scrape them 
+"""
+from bs4 import BeautifulSoup
+import requests
+from parsel import Selector
 
 # Basic interface:
 # Not sure if useful or necessary really, 
@@ -23,26 +28,7 @@ def take_input():
     next_question = "What year would yuu like information about " + ceremony_name + " for?\n"
     ceremony_year = input(next_question)
     #print("The ceremony we are gathering data for is", ceremony_name,  "in", ceremony_year, "\n")
-    return [ceremony_name, ceremony_year]
-
-
-
-# Also not sure if this is really what we should be working on first after looking over slides... 
-# He says we should start by giving the parser the categories and then trying to find who wins, this is more 
-# The second part of trying to find the categories given the ceremony name. 
-
-# Regardless its one of the only things we can do right now so good to at least get started. 
-
-from bs4 import BeautifulSoup
-import requests
-from parsel import Selector
-
-#data_in = take_input()
-#ceremony_name = data_in[0]
-#ceremony_year = data_in[1]
-
-ceremony_name = "Golden Globes"
-ceremony_year = "2019"
+    return [ceremony_name, ceremony_year
 
 # def get_category_names(ceremony_name, ceremony_year): #[Beautiful Soup]
     # """
@@ -107,4 +93,34 @@ def get_category_names(ceremony_name, ceremony_year): #[Parsel selector version]
     return(categories)
 
 
-get_category_names(ceremony_name, ceremony_year)
+#get_category_names(ceremony_name, ceremony_year)
+
+
+award_names = [
+    "Actor in a Drama Motion Picture",
+    "Actress in a Drama Motion Picture",
+    "Drama Motion Picture",
+    "Actress in a Musical or Comedy Motion Picture ",
+    "Cecil B. DeMille Award",
+    "Musical or Comedy Motion Picture",
+    "Actress in a Drama TV Series",
+    "Actor in a musical or Comedy Film",
+    "Original Script",
+    "Supporting Actress in a Motion Picture",
+    "Supporting Actor in a Motion Picture",
+    "Director of a Motion Picture",
+    "Drama TV Series",
+    "Original Song",
+    "Foreign Language Film",
+    "Screenplay of a Motion Picture",
+    "Miniseries of TV Film",
+    "Animated Feature Film",
+    "Actor in a Drama TV Series",
+    "Supporting ACtress in a Series, Mini Series, or Motion Picture for TV",
+    "Actress in a Series, Mini-Series, or Motion Picture for TV",
+    "Musical or Comedy TV Series",
+    "Supporting Actor in a Series, Mini-Series, of Motion Picture for TV",
+   "Actress in  Musical or Comedy TV Series",
+   "Actor in a Mini-Series or Motion Picture for TV",
+   "Actor in a Musical of Comedy TV Series"
+]

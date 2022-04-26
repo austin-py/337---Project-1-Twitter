@@ -5,6 +5,34 @@ class Ceremony:
         self.name = name
         self.awards = []
 
+    def print(self):
+        print("------" + self.name + "------")
+        for e in self.awards:
+            res = e.name + ":\n   Presenters: "
+            for n in e.presenters:
+                res = res + n.name + ", "
+            res = res + "\n   Nominees: "
+            for n in e.nominees:
+                res = res + n.name + ", "
+
+            res = res + "\n   Winner: "
+            if e.winner:
+                res = res + e.winner.name
+            print(res)
+
+    def get_nominees(self):
+        res = set()
+        for a in self.awards:
+            for n in a.nominees:
+                res.add(n)
+        return res
+    
+    def get_winners(self):
+        res = set()
+        for a in self.awards:
+            res.add(a.winner)
+        return res
+
 # Award class
 class Award:
     def __init__(self, ID, name, type):
@@ -25,6 +53,11 @@ class Contestant:
         self.award_nominated = []
         self.award_won = []
 
+class Presenter:
+    def __init__(self, ID, name):
+        self.ID = ID
+        self.name = name
+        self.award_present = []
 
 # bind award with ceremony
 def ceremony_award_bind(award, ceremony):
@@ -48,6 +81,31 @@ def won(award, contestant):
         return True
     else:
         return False
+
+# add a presenter for an award
+def present(award, presenter):
+    award.presenters.append(presenter)
+    presenter.award_present.append(award)
+
+def remove_nominee(award, contestant):
+    if contestant in award.nominees:
+        award.nominees.remove(contestant)
+        contestant.award_nominated.remove(award)
+    if contestant == award.winner:
+        award.winner = None
+        contestant.award_won.remove(award)
+
+def remove_winner(award, winner):
+    if winner == award.winner:
+        award.winner = None
+        winner.award_won.remove(award)
+
+def remove_presenter(award, presenter):
+    if presenter in award.presenters:
+        award.presenters.remove(presenter)
+        presenter.award_present.remove(award)
+
+
 
 
 

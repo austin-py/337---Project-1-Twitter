@@ -1,0 +1,30 @@
+award_names = [
+    "Actor in a Drama Motion Picture",
+    "Actress in a Drama Motion Picture",
+    "Drama Motion Picture",
+    "Actress in a Musical or Comedy Motion Picture ",
+    "Cecil B. DeMille Award",
+    "Musical or Comedy Motion Picture",
+    "Actress in a Drama TV Series",
+    "Actor in a musical or Comedy Film",
+    "Original Script",
+    "Supporting Actress in a Motion Picture",
+    "Supporting Actor in a Motion Picture",
+    "Director of a Motion Picture",
+    "Drama TV Series",
+    "Original Song",
+    "Foreign Language Film",
+    "Screenplay of a Motion Picture",
+    "Miniseries of TV Film",
+    "Animated Feature Film",
+    "Actor in a Drama TV Series",
+    "Supporting ACtress in a Series, Mini Series, or Motion Picture for TV",
+    "Actress in a Series, Mini-Series, or Motion Picture for TV",
+    "Musical or Comedy TV Series",
+    "Supporting Actor in a Series, Mini-Series, of Motion Picture for TV",
+   "Actress in  Musical or Comedy TV Series",
+   "Actor in a Mini-Series or Motion Picture for TV",
+   "Actor in a Musical of Comedy TV Series"
+]
+
+award_names_w_best = ["Best " + i for i in award_names if i != "Cecil B. DeMille Award"]

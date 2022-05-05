@@ -104,23 +104,35 @@ def get_best_dressed(filename=None):
                     just_names[i] = just_names.get(i,0) + 1
                 potential_names[item] = potential_names.get(item,0) + 1
     
-    extra_temp = []
+    names = []
+    statements = []
     for i in just_names.keys():
-        extra_temp.append([i,just_names[i]])
+        names.append([i,just_names[i]])
+    for i in potential_names.keys():
+        statements.append([i,potential_names[i]])
+    
+    statements.sort(key = lambda x: x[1])
+    statements.reverse()
 
-    extra_temp.sort(key= lambda x: x[1])
-    extra_temp.reverse()
+    names.sort(key= lambda x: x[1])
+    names.reverse()
 
-    return extra_temp
+    return names,statements 
 
 
 
 
 #high_potential_names, people_really_liked = get_awards()
-temp = get_best_dressed('gg2015.json')
+temp,temp1 = get_best_dressed('gg2015.json')
 for i in range(10):
     print(temp[i])
+print("TEST")
+for i in range(10):
+    print(temp1[i])
+
+print("TEST")
 print(temp[0][0])
+print(temp1[0][0])
 
 
 

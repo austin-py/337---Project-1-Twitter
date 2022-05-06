@@ -1,7 +1,11 @@
-
 import re
 from json_reader import load_tweets
+import config
 from award_names import award_names_w_best as anwb
+
+FILE = config.FILE
+AWARD_SHOW_NAME = config.AWARD_SHOW_NAME
+
 """ 
 Fair warning, this file is a bit of a mess right now as i've been testing a bunch of different stuff... 
 
@@ -20,7 +24,7 @@ def print_awards(awards):
     for name in awards:
         print(name[0], "............", name[1])
 
-def get_awards(filename=None):
+def get_awards(tweets):
     """
     Input: 
         - Optionally takes a filename from the data folder, defaults to Golden Globes 2013 if not given one. 
@@ -28,7 +32,6 @@ def get_awards(filename=None):
     Output:
         - Outputs a list of award names from the award show represented by the filename. 
     """
-    tweets = load_tweets(filename=filename)
     num_tweets = 0
     potential_names = {}
     high_potential = {}
@@ -78,8 +81,8 @@ def get_awards(filename=None):
     really_high_potential = [] 
     for potential in high_potential.keys():
         really_high_potential.append([potential,high_potential[potential]])
-    really_high_potential.sort(key = lambda x: x[1])
-    print_awards(really_high_potential)
+    really_high_potential.sort(key = lambda x: x[1],reverse=True)
+    #print_awards(really_high_potential)
     just_names = [i[0] for i in really_high_potential]
     
 
@@ -95,31 +98,34 @@ def get_awards(filename=None):
 
     return just_names
 
-def get_best_dressed(filename=None):
+def get_best_dressed(tweets):
     """
     Input: 
         - Optionally takes a filename from the data folder, defaults to Golden Globes 2013 if not given one.
 
     Output:
         - Outputs the twitter voted best-dressed. 
-    """
-    tweets = load_tweets(filename=filename)
+    """ 
     num_tweets = 0
     potential_names = {}
     just_names = {}
     for tweet in tweets:
         num_tweets += 1 
-        if 'best' in tweet['text']: # It is significantly faster to check this here then just let regex do it all. 
-            test = re.findall("best dressed [a-zA-Z\s]+",tweet['text'],flags=re.IGNORECASE)
-            test2 = re.findall("[a-zA-Z\s]+ best dressed",tweet['text'],flags=re.IGNORECASE)
-            for item in test:
+        if 'best' in tweet['text']: 
+            beginning = re.findall("best dressed [a-zA-Z\s]+",tweet['text'],flags=re.IGNORECASE)
+            ending = re.findall("[a-zA-Z\s]+ best dressed",tweet['text'],flags=re.IGNORECASE)
+            for item in beginning:
                 temp = re.findall('([A-Z][a-z]+(?=\s[A-Z])(?:\s[A-Z][a-z]+)+)',item)
                 for i in temp:
+                    if (i == AWARD_SHOW_NAME):
+                        continue
                     just_names[i] = just_names.get(i,0) + 1
                 potential_names[item] = potential_names.get(item,0) + 1
-            for item in test2:
+            for item in ending:
                 temp = re.findall('([A-Z][a-z]+(?=\s[A-Z])(?:\s[A-Z][a-z]+)+)',item)
                 for i in temp:
+                    if (i == AWARD_SHOW_NAME):
+                        continue
                     just_names[i] = just_names.get(i,0) + 1
                 potential_names[item] = potential_names.get(item,0) + 1
     
@@ -130,44 +136,19 @@ def get_best_dressed(filename=None):
     for i in potential_names.keys():
         statements.append([i,potential_names[i]])
     
-    statements.sort(key = lambda x: x[1])
-    statements.reverse()
+    statements.sort(key = lambda x: x[1],reverse = True)
+    names.sort(key= lambda x: x[1],reverse= True)
 
-    names.sort(key= lambda x: x[1])
-    names.reverse()
-
-    return names,statements 
+    return names
 
 
 
-
-award_names = get_awards("gg2013.json")
-
-
-
-
-
-# temp,temp1 = get_best_dressed('gg2015.json')
-# for i in range(10):
-    # print(temp[i])
-# print("TEST")
-# for i in range(10):
-    # print(temp1[i])
-
-# print("TEST")
-# print(temp[0][0])
-# print(temp1[0][0])
-
-
-
-
-
-
-
-
-
-
-"""
--Best dressed or other sentiment votes as voted by twitter might be fairly easy to generate while doing this as well. 
--We might want to tag tweets that we get award names from, because they likely also have information about the nominees or winners. 
-"""
+# 
+# award_names = get_awards(FILE)
+# for i in range(26):
+    # print("Our ", i, "th pick for award_name is ", award_names[i])
+# 
+# temp = get_best_dressed(FILE)
+# 
+# print('\n\nParser thinks best-dressed is ', temp[0][0])
+# 

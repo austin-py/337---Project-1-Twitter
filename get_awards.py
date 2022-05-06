@@ -2,32 +2,11 @@
 import re
 from json_reader import load_tweets
 from award_names import award_names_w_best as anwb
+""" 
+Fair warning, this file is a bit of a mess right now as i've been testing a bunch of different stuff... 
 
-
-def clean_up(potential_awards):
-    """
-    Input:
-        - Takes a list of list of awards which contain the name, and the number of times it was mentioned
-        - [[Best Drama, 45], [Best Picture, 57]] etc 
-    Output:
-        - Returns the list with updated counts. This tries to take longer sentences such as 
-          "best drama at the golden globes goes to _____" and still use them in the ocunt for "best drama"
-
-          Current bug: 
-          Double counts since it runs both lists, since proportional for all of them not sure it matters to much. 
-
-          Elimites from things like best comedy series to best comedy... which gets the spirit of the award but doesnt finish it.
-          Basically always shortens, which isn't always what the award names want.  Another example is "Best actor in motion picture -> best actor" 
-    """
-    for n in potential_awards:
-        for name in potential_awards:
-            if n[0] in name[0]:
-                print("ADDED COUNT TO", n[0], "PROGRAM THINKS ", n[0], " IN ", name[0])
-                n[1] += 1
-            elif name[0] in n[0]:
-                name[1] +=1 
-                print("ADDED COUNT TO", name[0], "PROGRAM THINKS ", name[0], " IN ", n[0])
-    return potential_awards
+Will clean it up later, but in the meantime ask if you have any questions. 
+"""
 
 def print_awards(awards):
     """
@@ -45,20 +24,46 @@ def get_awards(filename=None):
     """
     Input: 
         - Optionally takes a filename from the data folder, defaults to Golden Globes 2013 if not given one. 
+
     Output:
         - Outputs a list of award names from the award show represented by the filename. 
     """
     tweets = load_tweets(filename=filename)
     num_tweets = 0
     potential_names = {}
+    high_potential = {}
     for tweet in tweets:
+        original = tweet
+        tweet = tweet['text'].strip().lower()
+        tweet = tweet.split (" ")
         num_tweets += 1 
-        if 'best' in tweet['text']: # It is significantly faster to check this here then just let regex do it all. 
-            test = re.findall("best [a-zA-Z\s]+",tweet['text'],flags=re.IGNORECASE)
+        if 'best' in tweet: 
+            recording = False
+            curr = '' 
+            stop_words = ["-","at","for","goes"] #TODO add more 
+            end_charachters = [":",".","!"]
+            for i in range(len(tweet)):
+                if tweet[i] == 'best':
+                    recording = True
+                    curr = tweet[i]
+                elif recording:
+                    if tweet[i] != "":
+                        if tweet[i] in stop_words or tweet[i][-1] in end_charachters:
+                            high_potential[curr] = high_potential.get(curr,0) + 1
+                    curr = curr + " " + tweet[i]
+                    potential_names[curr] = potential_names.get(curr,0) + 1
+               
+               
+               
+
+            # This was my old way of identifying. Did pretty well but always got the shortest version 
+            # the most, so never got description such as "in a tv movie, series, or miniseries" for supporting actress. 
+            test = re.findall("best [a-zA-Z\s]+",original['text'],flags=re.IGNORECASE)
             for item in test:
                 item = item.strip().lower()
                 potential_names[item] = potential_names.get(item,0) + 1
 
+    # This is also alligned with the old way, just did probability basically. 
     high_potential_names = []
     people_really_liked = [] 
     for potential_name in potential_names.keys():
@@ -69,18 +74,32 @@ def get_awards(filename=None):
         elif potential_names[potential_name] > (UPPER_BOUND * num_tweets):
             people_really_liked.append([potential_name,potential_names[potential_name]])
 
-    high_potential_names = clean_up(high_potential_names)
+    # This is for the newer version where we find all possible strings after best, and priortize the ones with stop words. 
+    really_high_potential = [] 
+    for potential in high_potential.keys():
+        really_high_potential.append([potential,high_potential[potential]])
+    really_high_potential.sort(key = lambda x: x[1])
+    print_awards(really_high_potential)
+    just_names = [i[0] for i in really_high_potential]
+    
+
+
     high_potential_names.sort(key= lambda x: x[1])
-
-
-    people_really_liked = clean_up(people_really_liked)
     people_really_liked.sort(key= lambda x: x[1])
-    return high_potential_names, people_really_liked
+    #print_awards(high_potential_names)
+    #print_awards(people_really_liked)
+
+    # just_names = [i[0] for i in high_potential_names]
+    # just_names2 = [i[0] for i in people_really_liked]
+    # just_names = just_names + just_names2
+
+    return just_names
 
 def get_best_dressed(filename=None):
     """
     Input: 
-        - Optionally takes a filename from the data folder, defaults to Golden Globes 2013 if not given one. 
+        - Optionally takes a filename from the data folder, defaults to Golden Globes 2013 if not given one.
+
     Output:
         - Outputs the twitter voted best-dressed. 
     """
@@ -122,26 +141,30 @@ def get_best_dressed(filename=None):
 
 
 
-#high_potential_names, people_really_liked = get_awards()
-temp,temp1 = get_best_dressed('gg2015.json')
-for i in range(10):
-    print(temp[i])
-print("TEST")
-for i in range(10):
-    print(temp1[i])
-
-print("TEST")
-print(temp[0][0])
-print(temp1[0][0])
+award_names = get_awards("gg2013.json")
 
 
 
 
 
+# temp,temp1 = get_best_dressed('gg2015.json')
+# for i in range(10):
+    # print(temp[i])
+# print("TEST")
+# for i in range(10):
+    # print(temp1[i])
+
+# print("TEST")
+# print(temp[0][0])
+# print(temp1[0][0])
 
 
-#print_awards(high_potential_names)
-#print_awards(people_really_liked)
+
+
+
+
+
+
 
 
 """

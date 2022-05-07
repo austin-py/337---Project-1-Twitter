@@ -1,6 +1,7 @@
 import json
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 import host_parser
 
@@ -51,10 +52,25 @@ def save_host_tweets(output_name):
 
     f.close()
 
+def clean_and_save(input_file, output_file):
+    new_tweets = load_tweets(input_file)
+    print(len(new_tweets))
+    temp = []
+    collection = set()
+    for t in new_tweets:
+        content = t['text']
+        if content not in collection:
+            collection.add(content)
+            temp.append(t)
+
+    new_tweets = pd.DataFrame(temp)
+    print(len(new_tweets))
+    new_tweets.to_json('data/' + output_file, orient='records')
 
 def main():
     pass
 
 
 if __name__ == '__main__':
-    save_host_tweets('gg2015')
+    clean_and_save('gg2013.json', 'gg2013_clean.json')
+    clean_and_save('gg2015.json', 'gg2015_clean.json')

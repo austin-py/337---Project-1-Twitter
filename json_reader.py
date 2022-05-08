@@ -2,10 +2,11 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import sys
 
 import host_parser
 
-
+# read json to dict
 def load_tweets(filename=None):
     if not filename:
         filename = 'gg2013.json'
@@ -34,7 +35,7 @@ def save_tweets(output_name):
 
 
 def save_host_tweets(output_name):
-    path = 'data/' + output_name + '_host.txt'
+    path = 'data/' + output_name + '_host_clean.txt'
     f = open(path, 'w')
     tweets = load_tweets(output_name + '.json')
 
@@ -67,10 +68,16 @@ def clean_and_save(input_file, output_file):
     print(len(new_tweets))
     new_tweets.to_json('data/' + output_file, orient='records')
 
-def main():
-    pass
+def main(*args):
+    #you can use terminal to run the script e.g., python json_read.py 'gg2013'
+    print('Running {}'.format(sys.argv[0]))
+    save_host_tweets(sys.argv[1])
+    print('Finish running {}'.format(sys.argv[0]))
 
 
 if __name__ == '__main__':
-    clean_and_save('gg2013.json', 'gg2013_clean.json')
-    clean_and_save('gg2015.json', 'gg2015_clean.json')
+    main()
+    # clean_and_save('gg2013.json', 'gg2013_clean.json')
+    # clean_and_save('gg2015.json', 'gg2015_clean.json')
+    #save_host_tweets('gg2013')
+    #save_host_tweets('gg2015')

@@ -75,7 +75,7 @@ def get_host_majority_vote(tweets):
         present_result, present_participle_result, plural_noun_result, past_tense_result)
     return majority_vote_result
 
-# get top n answers
+# get top n answers and return the top 2 answer
 def rank_and_select_final_answers(*args):
     final_result = {}
     top_n = 10
@@ -89,7 +89,7 @@ def rank_and_select_final_answers(*args):
                 final_result[k] = sorted_result[k]
 
     sorted_final_result = dict(sorted(final_result.items(), key=lambda x:x[1], reverse=True))
-    final_top_n_answers = list(sorted_final_result.keys())[:2]
+    final_top_2_answers = list(sorted_final_result.keys())[:2]
     # ans_prob = {}
     # for i in range(len(final_top_n_answers)):
     #     ans = final_top_n_answers[i]
@@ -104,7 +104,7 @@ def rank_and_select_final_answers(*args):
     # sorted_refined_final = dict(sorted(ans_prob.items(), key=lambda x:x[1], reverse=True))
     # sorted_top_2 = list(sorted_refined_final.keys())[:10]
 
-    return final_top_n_answers
+    return final_top_2_answers
 
 ###current performance by top_n = 10
     # gg2013_clean.json:

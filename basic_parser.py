@@ -61,7 +61,7 @@ def main():
     tweets = load_tweets()
     for t in tweets:
         text = t['text']
-        get_nominee(text)
+        get_host(text)
 
 
 

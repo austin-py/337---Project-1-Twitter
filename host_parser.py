@@ -25,6 +25,11 @@ def has_host(input_tweet):
             return True
     return False
 
+def get_host(tweets):
+    hosts = get_host_majority_vote(tweets)
+    return hosts
+
+
 def get_host_majority_vote(tweets):
     present_result = {}
     present_participle_result = {}
@@ -323,24 +328,12 @@ def main():
         #redcarpet http://t.co/8lqC3ocQ'), 'hosts'))
     #print(get_host_rule_past_tense('RT @thetimes: Tonight\'s Golden Globes will be hosted Tina Fey and Amy Poehler. Full nominations here: http://t.co/xEjTpufI http://t.co/NQy5itil', 'hosted'))
     #print(get_host_rule_past_tense('RT @LaurieCrosswell: Every awards show from now on should be hosted by Amy Poelher and Tina Fey. #goldenglobes', 'hosted'))
-    # print(remove_nonword_char("Striker@#$__.. as1%23"))
-    #print(find_common_phrase())
-    #print(find_common_phrase('gg2015.json'))
 
     tweets = load_tweets('gg2013_clean.json')
-    print(get_host_majority_vote(tweets))
-    #
+    print(get_host(tweets))
+
     tweets = load_tweets('gg2015_clean.json')
-    print(get_host_majority_vote(tweets))
-
-
-    # for t in tweets:
-    #     text = t['text']
-    #     if 'hosted' in text:
-    #         print(text)
-    #         #print('index of \'hosted\' is {}'.format(text.index('were hosting')))
-    #         #print_host_by_form(t['text'], 'hosting')
-    #         print()
+    print(get_host(tweets))
 
 
     # host_tweets_length_list = []

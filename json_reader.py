@@ -71,7 +71,7 @@ def clean_and_save(input_file, output_file):
 def main(*args):
     #you can use terminal to run the script e.g., python json_read.py 'gg2013'
     print('Running {}'.format(sys.argv[0]))
-    save_host_tweets(sys.argv[1])
+    clean_and_save(sys.argv[1])
     print('Finish running {}'.format(sys.argv[0]))
 
 
@@ -79,5 +79,3 @@ if __name__ == '__main__':
     main()
     # clean_and_save('gg2013.json', 'gg2013_clean.json')
     # clean_and_save('gg2015.json', 'gg2015_clean.json')
-    #save_host_tweets('gg2013')
-    #save_host_tweets('gg2015')

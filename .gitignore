@@ -17,3 +17,12 @@ data/gg2015.json
 .idea/workspace.xml
 .DS_Store
 .idea/workspace.xml
+data/test_out1.txt
+data/test_out.txt
+data/gg2015_host_clean.txt
+data/gg2015_host.txt
+data/gg2015_clean.json
+data/gg2014_host_clean.txt
+data/gg2013_host_clean.txt
+data/gg2013_host.txt
+data/gg2013_clean.json

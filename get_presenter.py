@@ -1,24 +1,70 @@
 from json_reader import *
+from award_time import *
 from classes import *
 import re
+import pandas as pd
+import numpy as np
+from nltk.metrics import edit_distance
+from english_words import english_words_lower_alpha_set
 
-def present_related(t, award):
-    """
+def clean_award_name(name):
+    # clean award name into tokens of important words
+    name = name.lower()
+    stop_words = ['a', 'an', 'the', 'and', 'of', 'as', 'to', 'at', 'in', 'on', 'is', 'are', 'was', 'were', 'by', 'or',
+                  'for',
+                  'original', 'film', 'performance', 'motion', 'picture', 'award', 'role']
+    name = re.sub("\.|\?|\!|\'|\"|\(|\)|\[|\]|,|-", ' ', name)
+    name_words = []
+    for w in name.split():
+        if w not in stop_words:
+            name_words.append(w)
+    return name_words
+
+def present_data(tweets):
+    present_tweets = []
+    tweet_set = set()
+    for tweet in tweets:
+        t = tweet['text'].lower()
+        if 'present' in t:
+            words = t.split()
+            index = find_present(words)
+            prefix = ' '.join(words[0:(index + 2)])
+            if prefix not in tweet_set:
+                present_tweets.append(tweet)
+                tweet_set.add(prefix)
+
+    return present_tweets
+
+def get_l_r_time(time_award):
+    left_time = (time_award - 150)*1000
+    right_time = (time_award + 90)*1000
+    return left_time, right_time
+
+def present_related(t, time, name_words, left_time, right_time):
+    '''
     Input:
         - Take a text and an award
     Output:
         - Return True if text is related to the award, False otherwise
-    """
-    name = award.name.lower()
-    name_words = name.split()
-    present_words = ['present']
+    '''
+    t_lower = t.lower()
+    present_word = ['present', 'announce']
 
-    if name not in t.lower():
+    '''
+    if 'present' not in t_lower:
         return False
+    '''
 
-    for w in present_words:
-        if w in t.lower():
-            return True
+    time = int(time)
+    if time > left_time and time < right_time:
+        return True
+
+    include = 0.0
+    for w in name_words:
+        if w in t_lower:
+            include = include + 1.0
+    if include / len(name_words) >= 0.9:
+        return True
 
     return False
 
@@ -43,13 +89,13 @@ def find_present(words):
         - return the index of first word that contains present, return -1 otherwise
     """
     for i in range(len(words)):
-        if 'present' in words[i]:
+        if 'present' in words[i] or 'Present' in words[i]:
             return i
 
     return -1
 
 
-def find_presenter(tweets, award):
+def find_presenter(tweets, award, time_award):
     """
     Input:
         - Take a list of tweets and an award
@@ -58,18 +104,19 @@ def find_presenter(tweets, award):
     """
 
     possible_presenters = {}
-    max_back = 5
+    max_back = 6
+    name_words = clean_award_name(award.name)
+    left_time, right_time = get_l_r_time(time_award)
 
     for tweet in tweets:
         text = tweet['text']
-        if present_related(text, award):
-            sentences = re.split("\.|\?|\!", text)
+        if present_related(text,tweet['timestamp_ms'], name_words, left_time, right_time):
+            sentences = re.split("\?|\!|;", text)
             for sentence in sentences:
-                sentence = sentence.lower()
-                if 'present' in sentence and award.name.lower() in sentence:
+                if 'present' in sentence.lower():
                     find_presenter_in_sentence(sentence, max_back, possible_presenters)
 
-        sorted_presenters = sort_dict(possible_presenters)
+    sorted_presenters = sort_dict(possible_presenters)
     return sorted_presenters
 
 
@@ -80,9 +127,8 @@ def find_presenter_in_sentence(sentence, max_back, possible_presenters):
     Output:
         - Add to the dictionary all the possible presenters found in the sentence
     """
-    sentence = re.sub("\.|\?|\!|\'|\"|\(|\)|\[|\]|,", ' ', sentence)
+    sentence = re.sub("\.|\?|\!|\'|\"|\(|\)|\[|\]|,|-|@|:", ' ', sentence)
     passive_voice_word = ['was', 'were', 'is', 'are']
-    sentence = sentence.lower()
     words = sentence.split()
     present_index = find_present(words)
     if words[present_index] == 'presented' and words[present_index-1] in passive_voice_word:
@@ -90,6 +136,8 @@ def find_presenter_in_sentence(sentence, max_back, possible_presenters):
             j = present_index + i + 1
             curr = ''
             while j < len(words):
+                if (j - present_index) > 9:
+                    break
                 if j == present_index + i + 1:
                     curr = curr + words[j]
                 else:
@@ -104,6 +152,8 @@ def find_presenter_in_sentence(sentence, max_back, possible_presenters):
             j = present_index - i - 1
             curr = ''
             while j >= 0:
+                if (present_index - j) > 9:
+                    break
                 if j == present_index - i - 1:
                     curr = words[j] + curr
                 else:
@@ -116,47 +166,94 @@ def find_presenter_in_sentence(sentence, max_back, possible_presenters):
 
 
 
-def presenter_from_dict(answer, max_count = 15, max_word = 2):
+def presenter_from_dict(answer, max_count = 30, max_word = 3):
     """
     Input:
         - a sorted dictionary of possible presenter with occurence. max number of key to look through and max amount of match return
     Output:
         - Return the a list of best possible matches to presenter. (look for name and the return strings should not contains any stop words)
     """
-    stop_words = ['a', 'the', 'and', 'of', 'as', 'to', 'at', 'in', 'on', 'is', 'are', 'was', 'were']
+    stop_words = ['a', 'the', 'and', 'of', 'as', 'to', 'at', 'in', 'on', 'is', 'are', 'was', 'were',
+                  'there', 'this', 'that', 'had', 'have'
+                  'awards', 'golden', 'globes']
     res =[]
     i = 0
     j = 0
     for k in answer.keys():
-        if i >= max_count: break
+        if i >= max_count and j >= 1: break
         if j >= max_word: break
-        if len(k.split()) == 2 or len(k.split()) == 3:
+        if '#' in k:
+            continue
+        if not is_all_cap(k):
+            continue
+        if len(k.split()) <=3:
+            if len(k.split()) == 1:
+                if k.lower() not in english_words_lower_alpha_set and len(k) > 6 and k not in stop_words:
+                    res.append(k)
+                    j = j+1
+                continue
             contain_stop_word = False
-            words = k.split()
+            words = k.lower().split()
             for w in stop_words:
                 if w in words:
+                    contain_stop_word = True
+            for w in words:
+                if len(w) < 3:
                     contain_stop_word = True
             if not contain_stop_word:
                 j = j + 1
                 res.append(k)
         i = i+1
-    return res
+
+    res2 = sorted(res, key=len, reverse = True)
+    res = res2
+    presenter = []
+    for s in res:
+        add = True
+        for s2 in res:
+            if s != s2 and s in s2:
+                # for tomorrow: split to words, count words in english for both. if s2 has more then replace s2 with s.
+                add = False
+        if add:
+            presenter.append(s.lower())
+        if len(presenter) > 1:
+            break
 
 
+
+    return presenter
+
+def is_all_cap(t):
+    t_lower = t.lower().split()
+    t_norm = t.split()
+    for i in range(len(t_lower)):
+        if t_lower[i][0] == t_norm[i][0]:
+            return False
+    return True
 
 
 def main():
-    tweets = load_tweets('gg2013.json')
-    award_names = ['best supporting actor', 'best supporting actress', 'best director', 'best motion picture',
-                   'best actor', 'best actress', 'best screen play', 'best animated feature film', 'best television series']
+    award_names = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
+
+    time_award = load_tweets('time_award_2015.json')
+
+    tweets = load_tweets('gg2015_clean.json')
+
+    present_tweets = present_data(tweets)
+
+    presenters = {}
     i = 1
     for name in award_names:
         award = Award(i, name, 'actor')
         i = i+1
-        answer = find_presenter(tweets, award)
-        presenters = presenter_from_dict(answer)
-        print(name + ": " + str(presenters))
+        time_happen = int(time_award[name])
+        answer = find_presenter(present_tweets, award, time_happen)
+        presenter = presenter_from_dict(answer)
+        presenters[name] = presenter
+        print(name + ": " + str(presenter))
 
+    with open("presenters_2015.json", "w") as outfile:
+        json.dump(presenters, outfile)
 
 
 if __name__ == "__main__":

@@ -231,13 +231,12 @@ def is_all_cap(t):
             return False
     return True
 
+def get_presenter_all_awards(year, award_names):
+    get_time(year, award_names)
 
-def main():
-    award_names = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
+    time_award = load_tweets('time_award_'+ year + '.json')
 
-    time_award = load_tweets('time_award_2015.json')
-
-    tweets = load_tweets('gg2015_clean.json')
+    tweets = load_tweets('gg' + year + '_clean.json')
 
     present_tweets = present_data(tweets)
 
@@ -245,15 +244,23 @@ def main():
     i = 1
     for name in award_names:
         award = Award(i, name, 'actor')
-        i = i+1
+        i = i + 1
         time_happen = int(time_award[name])
         answer = find_presenter(present_tweets, award, time_happen)
         presenter = presenter_from_dict(answer)
         presenters[name] = presenter
         print(name + ": " + str(presenter))
 
-    with open("presenters_2015.json", "w") as outfile:
+    with open("data/presenters_" + year + ".json", "w") as outfile:
         json.dump(presenters, outfile)
+
+    return presenters
+
+
+def main():
+    award_names = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
+    presenter_2013 = get_presenter_all_awards('2013', award_names)
+    presenter_2015 = get_presenter_all_awards('2015', award_names)
 
 
 if __name__ == "__main__":

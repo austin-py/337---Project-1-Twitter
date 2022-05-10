@@ -78,33 +78,13 @@ def find_time(d):
         return np.mean(l)
     else: return 0
 
-def get_time(year):
+def get_time(year, award_names):
     tweets = load_tweets('gg' + year + '_clean.json')
     tweets = relevant_data(tweets)
     length = len(tweets)
     skip_step = int(length/20000 + 1)
     print(skip_step)
-    award_names = ['cecil b. demille award', 'best motion picture - drama',
-                   'best performance by an actress in a motion picture - drama',
-                   'best performance by an actor in a motion picture - drama',
-                   'best motion picture - comedy or musical',
-                   'best performance by an actress in a motion picture - comedy or musical',
-                   'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film',
-                   'best foreign language film',
-                   'best performance by an actress in a supporting role in a motion picture',
-                   'best performance by an actor in a supporting role in a motion picture',
-                   'best director - motion picture', 'best screenplay - motion picture',
-                   'best original score - motion picture', 'best original song - motion picture',
-                   'best television series - drama', 'best performance by an actress in a television series - drama',
-                   'best performance by an actor in a television series - drama',
-                   'best television series - comedy or musical',
-                   'best performance by an actress in a television series - comedy or musical',
-                   'best performance by an actor in a television series - comedy or musical',
-                   'best mini-series or motion picture made for television',
-                   'best performance by an actress in a mini-series or motion picture made for television',
-                   'best performance by an actor in a mini-series or motion picture made for television',
-                   'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television',
-                   'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
+
 
     time_award = {}
     for award in award_names:
@@ -133,8 +113,29 @@ def get_time(year):
 
 
 def main():
-    get_time('2013')
-    get_time('2015')
+    award_names = ['cecil b. demille award', 'best motion picture - drama',
+                   'best performance by an actress in a motion picture - drama',
+                   'best performance by an actor in a motion picture - drama',
+                   'best motion picture - comedy or musical',
+                   'best performance by an actress in a motion picture - comedy or musical',
+                   'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film',
+                   'best foreign language film',
+                   'best performance by an actress in a supporting role in a motion picture',
+                   'best performance by an actor in a supporting role in a motion picture',
+                   'best director - motion picture', 'best screenplay - motion picture',
+                   'best original score - motion picture', 'best original song - motion picture',
+                   'best television series - drama', 'best performance by an actress in a television series - drama',
+                   'best performance by an actor in a television series - drama',
+                   'best television series - comedy or musical',
+                   'best performance by an actress in a television series - comedy or musical',
+                   'best performance by an actor in a television series - comedy or musical',
+                   'best mini-series or motion picture made for television',
+                   'best performance by an actress in a mini-series or motion picture made for television',
+                   'best performance by an actor in a mini-series or motion picture made for television',
+                   'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television',
+                   'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
+    get_time('2013', award_names)
+    get_time('2015', award_names)
 
 
 if __name__ == '__main__':

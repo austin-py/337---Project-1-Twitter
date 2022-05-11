@@ -78,8 +78,11 @@ def find_time(d):
         return np.mean(l)
     else: return 0
 
-def get_time(year, award_names):
-    tweets = load_tweets('gg' + year + '_clean.json')
+def get_time(tweet_file_name, award_names):
+    file_name_length = len(tweet_file_name)
+    file_namw_wth_json = tweet_file_name[0:file_name_length - 5]
+    
+    tweets = load_tweets(tweet_file_name)
     tweets = relevant_data(tweets)
     length = len(tweets)
     skip_step = int(length/20000 + 1)
@@ -108,7 +111,7 @@ def get_time(year, award_names):
 
 
     time_award = sort_dict(time_award)
-    with open("data/time_award_" + year + ".json", "w") as outfile:
+    with open("data/" + file_namw_wth_json + "_award_time.json", "w") as outfile:
         json.dump(time_award, outfile)
 
 

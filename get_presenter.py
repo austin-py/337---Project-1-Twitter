@@ -174,7 +174,7 @@ def presenter_from_dict(answer, max_count = 30, max_word = 3):
         - Return the a list of best possible matches to presenter. (look for name and the return strings should not contains any stop words)
     """
     stop_words = ['a', 'the', 'and', 'of', 'as', 'to', 'at', 'in', 'on', 'is', 'are', 'was', 'were',
-                  'there', 'this', 'that', 'had', 'have'
+                  'there', 'this', 'that', 'had', 'have', 'it', 'she', 'he', 'they'
                   'awards', 'golden', 'globes']
     res =[]
     i = 0
@@ -200,6 +200,9 @@ def presenter_from_dict(answer, max_count = 30, max_word = 3):
             for w in words:
                 if len(w) < 3:
                     contain_stop_word = True
+
+            contain_all_english_words = True
+
             if not contain_stop_word:
                 j = j + 1
                 res.append(k)
@@ -231,12 +234,15 @@ def is_all_cap(t):
             return False
     return True
 
-def get_presenter_all_awards(year, award_names):
-    get_time(year, award_names)
+def get_presenter_all_awards(tweet_file_name, award_names):
+    file_name_length = len(tweet_file_name)
+    file_namw_wth_json = tweet_file_name[0:file_name_length - 5]
+    get_time(tweet_file_name, award_names)
 
-    time_award = load_tweets('time_award_'+ year + '.json')
 
-    tweets = load_tweets('gg' + year + '_clean.json')
+    time_award = load_tweets(file_namw_wth_json + "_award_time.json")
+
+    tweets = load_tweets(tweet_file_name)
 
     present_tweets = present_data(tweets)
 
@@ -251,7 +257,7 @@ def get_presenter_all_awards(year, award_names):
         presenters[name] = presenter
         print(name + ": " + str(presenter))
 
-    with open("data/presenters_" + year + ".json", "w") as outfile:
+    with open("data/presenters_" + file_namw_wth_json + ".json", "w") as outfile:
         json.dump(presenters, outfile)
 
     return presenters
@@ -259,8 +265,8 @@ def get_presenter_all_awards(year, award_names):
 
 def main():
     award_names = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
-    presenter_2013 = get_presenter_all_awards('2013', award_names)
-    presenter_2015 = get_presenter_all_awards('2015', award_names)
+    presenter_2013 = get_presenter_all_awards('gg2013_clean.json', award_names)
+    presenter_2015 = get_presenter_all_awards('gg2015_clean.json', award_names)
 
 
 if __name__ == "__main__":

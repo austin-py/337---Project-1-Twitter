@@ -1,4 +1,5 @@
 import re
+from unicodedata import name
 from json_reader import load_tweets
 import config
 from award_names import award_names_w_best as anwb
@@ -24,10 +25,13 @@ def print_awards(awards):
     for name in awards:
         print(name[0], "............", name[1])
 
+def clean_awards(awards):
+    pass 
+
 def get_awards(tweets):
     """
     Input: 
-        - Optionally takes a filename from the data folder, defaults to Golden Globes 2013 if not given one. 
+        - Takes a dictionary of tweets from json reader
 
     Output:
         - Outputs a list of award names from the award show represented by the filename. 
@@ -67,15 +71,17 @@ def get_awards(tweets):
                 potential_names[item] = potential_names.get(item,0) + 1
 
     # This is also alligned with the old way, just did probability basically. 
+    high_potential['best'] = 0
+    potential_names['best'] = 0
     high_potential_names = []
     people_really_liked = [] 
     for potential_name in potential_names.keys():
         LOWER_BOUND = 0.00011451933372651638 #Found by 20/#2013 tweets 
         UPPER_BOUND = 0.00028629833431629095 #Found by 50/#2013 tweets 
-        if potential_names[potential_name] > (LOWER_BOUND * num_tweets) and potential_names[potential_name] <= (UPPER_BOUND * num_tweets) :
+        if potential_names[potential_name] > (LOWER_BOUND * num_tweets): #and potential_names[potential_name] <= (UPPER_BOUND * num_tweets) :
             high_potential_names.append([potential_name,potential_names[potential_name]])
-        elif potential_names[potential_name] > (UPPER_BOUND * num_tweets):
-            people_really_liked.append([potential_name,potential_names[potential_name]])
+        # elif potential_names[potential_name] > (UPPER_BOUND * num_tweets):
+            # people_really_liked.append([potential_name,potential_names[potential_name]])
 
     # This is for the newer version where we find all possible strings after best, and priortize the ones with stop words. 
     really_high_potential = [] 
@@ -96,12 +102,12 @@ def get_awards(tweets):
     # just_names2 = [i[0] for i in people_really_liked]
     # just_names = just_names + just_names2
 
-    return just_names
+    return just_names[:26]
 
 def get_best_dressed(tweets):
     """
     Input: 
-        - Optionally takes a filename from the data folder, defaults to Golden Globes 2013 if not given one.
+        - Takes a dictionary of tweets from json reader
 
     Output:
         - Outputs the twitter voted best-dressed. 
@@ -117,14 +123,14 @@ def get_best_dressed(tweets):
             for item in beginning:
                 temp = re.findall('([A-Z][a-z]+(?=\s[A-Z])(?:\s[A-Z][a-z]+)+)',item)
                 for i in temp:
-                    if (i == AWARD_SHOW_NAME):
+                    if (i == AWARD_SHOW_NAME or len(i.split(" ")) > 2):
                         continue
                     just_names[i] = just_names.get(i,0) + 1
                 potential_names[item] = potential_names.get(item,0) + 1
             for item in ending:
                 temp = re.findall('([A-Z][a-z]+(?=\s[A-Z])(?:\s[A-Z][a-z]+)+)',item)
                 for i in temp:
-                    if (i == AWARD_SHOW_NAME):
+                    if (i == AWARD_SHOW_NAME or len(i.split(" ")) > 2):
                         continue
                     just_names[i] = just_names.get(i,0) + 1
                 potential_names[item] = potential_names.get(item,0) + 1
@@ -141,14 +147,66 @@ def get_best_dressed(tweets):
 
     return names
 
+def get_worst_dressed(tweets):
+    """
+    Input: 
+        - Takes a dictionary of tweets from json reader
+
+    Output:
+        - Outputs the twitter voted worst-dressed. 
+    """ 
+    num_tweets = 0
+    potential_names = {}
+    just_names = {}
+    for tweet in tweets:
+        num_tweets += 1 
+        if 'worst' in tweet['text']: 
+            beginning = re.findall("worst dressed [a-zA-Z\s]+",tweet['text'],flags=re.IGNORECASE)
+            ending = re.findall("[a-zA-Z\s]+ worst dressed",tweet['text'],flags=re.IGNORECASE)
+            for item in beginning:
+                temp = re.findall('([A-Z][a-z]+(?=\s[A-Z])(?:\s[A-Z][a-z]+)+)',item)
+                for i in temp:
+                    if (i == AWARD_SHOW_NAME or len(i.split(" ")) > 2):
+                        continue
+                    just_names[i] = just_names.get(i,0) + 1
+                potential_names[item] = potential_names.get(item,0) + 1
+            for item in ending:
+                temp = re.findall('([A-Z][a-z]+(?=\s[A-Z])(?:\s[A-Z][a-z]+)+)',item)
+                for i in temp:
+                    if (i == AWARD_SHOW_NAME or len(i.split(" ")) > 2):
+                        continue
+                    just_names[i] = just_names.get(i,0) + 1
+                potential_names[item] = potential_names.get(item,0) + 1
+    
+    names = []
+    statements = []
+    for i in just_names.keys():
+        names.append([i,just_names[i]])
+    for i in potential_names.keys():
+        statements.append([i,potential_names[i]])
+    
+    statements.sort(key = lambda x: x[1],reverse = True)
+    # for i in statements:
+        # print(i)
+    names.sort(key= lambda x: x[1],reverse= True)
+
+    return names
 
 
-# 
-# award_names = get_awards(FILE)
-# for i in range(26):
-    # print("Our ", i, "th pick for award_name is ", award_names[i])
-# 
-# temp = get_best_dressed(FILE)
-# 
-# print('\n\nParser thinks best-dressed is ', temp[0][0])
-# 
+    
+    
+    
+
+    
+
+    
+
+if __name__ == '__main__':
+    tweets = load_tweets(FILE)
+    award_names = get_awards(tweets)
+    for i in range(26):
+        print("Our ", i, "th pick for award_name is ", award_names[i])
+    temp = get_best_dressed(tweets)
+    print('\n\nParser thinks best-dressed is ', temp[0][0])
+    temp = get_worst_dressed(tweets)
+    print('\n\nParser thinks worst-dressed is ', temp[0][0])

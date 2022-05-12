@@ -1,3 +1,3 @@
-FILE = 'gg2015.json'
+FILE = 'gg2013.json'
 AWARD_SHOW_NAME = "Golden Globes"
-AWARD_SHOW_YEAR = '2015'
+AWARD_SHOW_YEAR = '2013'

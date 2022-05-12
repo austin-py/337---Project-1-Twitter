@@ -1,3 +1,6 @@
+#TODO: test whether better with clean or original data... make sure get_output uses whichever is better 
+#TODO: finish cleaning function. 
+
 import re
 from unicodedata import name
 from json_reader import load_tweets
@@ -7,11 +10,6 @@ from award_names import award_names_w_best as anwb
 FILE = config.FILE
 AWARD_SHOW_NAME = config.AWARD_SHOW_NAME
 
-""" 
-Fair warning, this file is a bit of a mess right now as i've been testing a bunch of different stuff... 
-
-Will clean it up later, but in the meantime ask if you have any questions. 
-"""
 
 def print_awards(awards):
     """
@@ -26,7 +24,24 @@ def print_awards(awards):
         print(name[0], "............", name[1])
 
 def clean_awards(awards):
-    pass 
+    for award in awards.keys():
+        if len(award.split('-')) > 2:
+            temp = award.split('-')
+            temp = "-".join(temp[:2])
+            temp = temp.strip()
+            if temp in awards.keys():
+                awards[temp] += awards[award]
+                awards[award] = 0 
+        elif len(award.split('-')) == 2:
+            temp = award.split('-')
+            if len(temp[1].strip().split(" ")) == 2 or '"' in temp[1]:
+                temp = temp[0]
+                temp = temp.strip()
+                if temp in awards.keys():
+                    awards[temp] += awards[award]
+                    awards[award] = 0 
+    
+    return awards
 
 def get_awards(tweets):
     """
@@ -37,52 +52,34 @@ def get_awards(tweets):
         - Outputs a list of award names from the award show represented by the filename. 
     """
     num_tweets = 0
-    potential_names = {}
     high_potential = {}
     for tweet in tweets:
-        original = tweet
         tweet = tweet['text'].strip().lower()
         tweet = tweet.split (" ")
         num_tweets += 1 
         if 'best' in tweet: 
             recording = False
             curr = '' 
-            stop_words = ["-","at","for","goes"] #TODO add more 
+            stop_words = ["-","at","for","goes"] 
             end_charachters = [":",".","!"]
             for i in range(len(tweet)):
                 if tweet[i] == 'best':
                     recording = True
                     curr = tweet[i]
                 elif recording:
-                    if tweet[i] != "":
-                        if tweet[i] in stop_words or tweet[i][-1] in end_charachters:
+                    if tweet[i] != "" and curr != 'best':
+                        if tweet[i] in stop_words: 
+                            curr = curr.strip()
                             high_potential[curr] = high_potential.get(curr,0) + 1
+                        elif tweet[i][-1] in end_charachters:
+                            curr = curr + " " + tweet[i][:-1]
+                            curr = curr.strip()
+                            high_potential[curr] = high_potential.get(curr,0) + 1
+                            recording = False
                     curr = curr + " " + tweet[i]
-                    potential_names[curr] = potential_names.get(curr,0) + 1
-               
-               
-               
-
-            # This was my old way of identifying. Did pretty well but always got the shortest version 
-            # the most, so never got description such as "in a tv movie, series, or miniseries" for supporting actress. 
-            test = re.findall("best [a-zA-Z\s]+",original['text'],flags=re.IGNORECASE)
-            for item in test:
-                item = item.strip().lower()
-                potential_names[item] = potential_names.get(item,0) + 1
-
-    # This is also alligned with the old way, just did probability basically. 
-    high_potential['best'] = 0
-    potential_names['best'] = 0
-    high_potential_names = []
-    people_really_liked = [] 
-    for potential_name in potential_names.keys():
-        LOWER_BOUND = 0.00011451933372651638 #Found by 20/#2013 tweets 
-        UPPER_BOUND = 0.00028629833431629095 #Found by 50/#2013 tweets 
-        if potential_names[potential_name] > (LOWER_BOUND * num_tweets): #and potential_names[potential_name] <= (UPPER_BOUND * num_tweets) :
-            high_potential_names.append([potential_name,potential_names[potential_name]])
-        # elif potential_names[potential_name] > (UPPER_BOUND * num_tweets):
-            # people_really_liked.append([potential_name,potential_names[potential_name]])
-
+                            
+    high_potential = clean_awards(high_potential)
+    high_potential = clean_awards(high_potential)
     # This is for the newer version where we find all possible strings after best, and priortize the ones with stop words. 
     really_high_potential = [] 
     for potential in high_potential.keys():
@@ -91,16 +88,6 @@ def get_awards(tweets):
     #print_awards(really_high_potential)
     just_names = [i[0] for i in really_high_potential]
     
-
-
-    high_potential_names.sort(key= lambda x: x[1])
-    people_really_liked.sort(key= lambda x: x[1])
-    #print_awards(high_potential_names)
-    #print_awards(people_really_liked)
-
-    # just_names = [i[0] for i in high_potential_names]
-    # just_names2 = [i[0] for i in people_really_liked]
-    # just_names = just_names + just_names2
 
     return just_names[:26]
 
@@ -205,8 +192,8 @@ if __name__ == '__main__':
     tweets = load_tweets(FILE)
     award_names = get_awards(tweets)
     for i in range(26):
-        print("Our ", i, "th pick for award_name is ", award_names[i])
+        print("Our ", i, "th pick for award_name is ", award_names[i], ".",sep="")
     temp = get_best_dressed(tweets)
-    print('\n\nParser thinks best-dressed is ', temp[0][0])
+    print('\n\nParser thinks best-dressed is ', temp[0][0], ".")
     temp = get_worst_dressed(tweets)
-    print('\n\nParser thinks worst-dressed is ', temp[0][0])
+    print('\n\nParser thinks worst-dressed is ', temp[0][0], ".")

@@ -11,18 +11,17 @@ def save_to_json(input_file):
     hosts = get_host(tweets)
     output['hosts'] = hosts
     award_data = {}
-    award_names = get_awards(tweets)
-    print('{} awards found'.format(len(award_names)))
-    i = 1
-    for award_name in award_names:
-        items = {}
-        items['nominees'] = []
-        items['winner'] = []
-        award = Award(i, award_name, 'actor')
-        i = i + 1
-        presenters = presenter_from_dict(find_presenter(tweets, award))
-        items['presenters'] = presenters
-        award_data[award_name] = items
+
+    #Not sure how not to hard-code awards while still use official award names
+    #award_names = get_awards(tweets)
+    #print('{} awards found'.format(len(award_names)))
+
+    official_award_names = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
+    print('Number of official award names {}'.format(len(official_award_names)))
+    award_to_present_dict = get_presenter_all_awards(input_file, official_award_names)
+    for award_name, presenters in award_to_present_dict.items():
+        elements = {'nominees': [], 'winner': [], 'presenters': presenters}
+        award_data[award_name] = elements
 
     output['award_data'] = award_data
     path = 'data/ans_' + input_file
@@ -48,6 +47,8 @@ def main(*args):
 
 
 if __name__ == '__main__':
+    #take multiple input files
     main('gg2013_clean.json', 'gg2015_clean.json')
+    #main()
 
 

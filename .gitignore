@@ -33,3 +33,7 @@ data/gg2013answers.json
 data/gg2015answers.json
 data/time_award_2013.json
 data/time_award_2015.json
+data/gg2013_clean_award_time.json
+data/gg2015_clean_award_time.json
+data/presenters_gg2013_clean.json
+data/presenters_gg2015_clean.json

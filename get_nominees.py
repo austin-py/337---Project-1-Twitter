@@ -76,6 +76,10 @@ def find_nominees(data, award):
 
     return sort_dict(potential_nominees)
 
+def nominees_for_award(nom_dict):
+        for nom in nom_dict:
+        print(nom_dict[nom])
+
 
 def main():
     tweets = load_tweets('gg2013.json')
@@ -85,10 +89,14 @@ def main():
     for name in award_names:
         award = Award(i, name, 'actor')
         i = i+1
-        answer = find_presenter(tweets, award)
-        presenters = presenter_from_dict(answer)
-        print(name + ": " + str(presenters))
-
+        nominees_dict = find_nominees(tweets, award)
+        nominees = nominees_for_award(nominees_dict)
+        '''
+        print(name + " Nominees: ")
+        for nominee in nominees:
+            print(nominee)
+            print('\n')
+        '''
 
 
 if __name__ == "__main__":

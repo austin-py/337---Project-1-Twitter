@@ -77,6 +77,8 @@ def find_nominees(data, award):
     return sort_dict(potential_nominees)
 
 def nominees_for_award(nom_dict):
+        for nom in nom_dict:
+        print(nom_dict[nom])
 
 
 def main():

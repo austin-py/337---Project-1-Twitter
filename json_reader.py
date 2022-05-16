@@ -6,6 +6,7 @@ import sys
 
 import host_parser
 
+
 # read json to dict
 def load_tweets(filename=None):
     if not filename:

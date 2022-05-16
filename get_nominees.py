@@ -40,28 +40,45 @@ def sort_dict(dictionary):
         sorted_dict[k] = dictionary[k]
     return sorted_dict
 
-
 # caller function will manage splitting text, this function will only look at sentence chunks
 def nominee_candidates(text, cand_dict):
     candidate_lists = []
-    keyphrases = ["\swins", "\snominated\sfor", "\swinner\sof", "\shaswon", "\snominated", "\swins\sthe", "\slost", "\sloses\sto",
-                  "\slost\sto", "\sdid\snot\swin", "\sdidn't\swin", "\sgoes\sto"]
+    keyphrasesb4 = [r"\swins", r"\snominated\sfor", r"\swinner\sof", r"\shaswon", r"\swas\snominated", r"\sis\snominated", r"\swins\sthe", r"\slost", r"\sloses\sto",
+                    r"\slost\sto", r"\sdid\snot\swin", r"\sdidn't\swin", r"\sgoes\sto", r"\sup\sfor"]
+    keyphrasesaftr = [r"\snominated", r"\shas\snominated", r"\shave\snominated", r"\snominates", r"\scongratulations\sto", r"\scongrats\sto"]
     redflag_phrases = []
-    for kp in keyphrases:
-        fa_str = f".*(?= {kp})"
-        candidate_lists.append(re.findall(fa_str, text))
-
+    for kp in keyphrasesaftr:
+        fa_str = "(?<=" + kp + ").*"
+        new_cand = re.findall(fa_str, text)
+        if new_cand != [] and new_cand not in candidate_lists:
+            new_cand = [i for i in new_cand if i != '']
+            candidate_lists.append(new_cand)
+    for kp in keyphrasesb4:
+        fa_str = ".*(?=" + kp + ")"
+        new_cand = re.findall(fa_str, text)
+        if new_cand != [] and new_cand not in candidate_lists:
+            new_cand = [i for i in new_cand if i != '']
+            candidate_lists.append(new_cand)
     for candidate_list in candidate_lists:
-        for word in candidate_list:
-            if human_name(word):
-                if word in cand_dict:  # add a red flag checker for a more refined score
-                    cand_dict[word] += 1
+        for sentence in candidate_list:
+            locn = human_name(sentence)
+            for cand in locn:
+                if cand in cand_dict:
+                    cand_dict[cand] += 1
                 else:
-                    cand_dict[word] = 1
+                    cand_dict[cand] = 1
 
 
-def human_name(word):
-    return type(ne_chunk(pos_tag(word_tokenize(word)))) == Tree
+def human_name(text):
+    name_list = []
+    nltk_results = ne_chunk(pos_tag(word_tokenize(text)))
+    for nltk_result in nltk_results:
+        if type(nltk_result) == Tree:
+            name = ''
+            for nltk_result_leaf in nltk_result.leaves():
+                name += nltk_result_leaf[0] + ' '
+            name_list.append(name)
+    return name_list
 
 
 def find_nominees(data, award):
@@ -71,18 +88,19 @@ def find_nominees(data, award):
         if related_to_award(text, award):
             sentences = re.split("\.|\?|\!", text)
             for sentence in sentences:
-                sentence = sentence.lower()
+                # sentence = sentence.lower() #this would make name recognition impossible using nltk
                 nominee_candidates(sentence, potential_nominees)
 
     return sort_dict(potential_nominees)
 
+
 def nominees_for_award(nom_dict):
-        for nom in nom_dict:
-        print(nom_dict[nom])
+    for nom in nom_dict:
+        print(nom, nom_dict[nom])
 
 
 def main():
-    tweets = load_tweets('gg2013.json')
+    tweets = load_tweets(r'gg2013.json\gg2013.json')
     award_names = ['best supporting actor', 'best supporting actress', 'best director', 'best motion picture',
                    'best actor', 'best actress', 'best screen play', 'best animated feature film', 'best television series']
     i = 1
@@ -90,7 +108,8 @@ def main():
         award = Award(i, name, 'actor')
         i = i+1
         nominees_dict = find_nominees(tweets, award)
-        nominees = nominees_for_award(nominees_dict)
+        nominees_for_award(nominees_dict)
+        # nominees = nominees_for_award(nominees_dict)
         '''
         print(name + " Nominees: ")
         for nominee in nominees:

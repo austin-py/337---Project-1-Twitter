@@ -4,7 +4,7 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.9 (337---Project-1-Twitter)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.7 (338---Project-1-Twitter)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

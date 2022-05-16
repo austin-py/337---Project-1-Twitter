@@ -1,7 +1,17 @@
+import ssl
+
 from textblob import TextBlob
 from json_reader import *
 import numpy as np
 import time
+import nltk
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+nltk.download('punkt')
 
 def sort_dict(dictionary):
     """

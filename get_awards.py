@@ -1,5 +1,3 @@
-#TODO: test whether better with clean or original data... make sure get_output uses whichever is better 
-#TODO: finish cleaning function. 
 
 import re
 from unicodedata import name

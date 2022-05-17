@@ -2,9 +2,11 @@ from json_reader import *
 from classes import *
 import re
 import nltk
+import spacy
 from nltk import ne_chunk, pos_tag, word_tokenize
 from nltk.tree import Tree
-
+nlp = spacy.load("en_core_web_sm")
+global global_award_pick
 
 def related_to_award(text, award):
     """
@@ -43,9 +45,14 @@ def sort_dict(dictionary):
 # caller function will manage splitting text, this function will only look at sentence chunks
 def nominee_candidates(text, cand_dict):
     candidate_lists = []
-    keyphrasesb4 = [r"\swins", r"\snominated\sfor", r"\swinner\sof", r"\shaswon", r"\swas\snominated", r"\sis\snominated", r"\swins\sthe", r"\slost", r"\sloses\sto",
-                    r"\slost\sto", r"\sdid\snot\swin", r"\sdidn't\swin", r"\sgoes\sto", r"\sup\sfor"]
-    keyphrasesaftr = [r"\snominated", r"\shas\snominated", r"\shave\snominated", r"\snominates", r"\scongratulations\sto", r"\scongrats\sto"]
+    keyphrasesb4 = [r"\swins", r"\snominated\sfor", r"\swinner\sof", r"\shaswon", r"\swas\snominated", r"\sis\snominated",
+                    r"\swins\sthe", r"\slost", r"\sloses\sto",
+                    r"\slost\sto", r"\sdid\snot\swin", r"\sdidn't\swin", r"\sgoes\sto", r"\sup\sfor", r"\sbeats"
+                    r"\stakes\shome", r"\sbrings\shome", r"\sbeat\sout", r"\sbeats\sout"]
+
+    keyphrasesaftr = [r"\snominated", r"\shas\snominated", r"\shave\snominated", r"\snominates", r"\scongratulations\sto",
+                      r"\scongrats\sto", r"\sgoes\sto", r"\sover", r"\sbeats", r"\scan't\sbelieve", r"\sbeat\sout",
+                      r"\sbeats\sout", r"...\s"]
     redflag_phrases = []
     for kp in keyphrasesaftr:
         fa_str = "(?<=" + kp + ").*"
@@ -61,6 +68,9 @@ def nominee_candidates(text, cand_dict):
             candidate_lists.append(new_cand)
     for candidate_list in candidate_lists:
         for sentence in candidate_list:
+            global global_award_pick
+            if global_award_pick == "best motion picture":
+                stop = True
             locn = human_name(sentence)
             for cand in locn:
                 if cand in cand_dict:
@@ -69,7 +79,32 @@ def nominee_candidates(text, cand_dict):
                     cand_dict[cand] = 1
 
 
+def non_human_name(text):
+    name_list = []
+    expressions = [r'"[A-Z][a-z]*(\s([A-Z]|[a-z])[a-z]*)*"', r"'[A-Z][a-z]*(\s([A-Z]|[a-z])[a-z]*)*'",
+                   r"'[A-Z][a-z]*(\s[A-Z][a-z]*)*'", r'"[A-Z][a-z]*(\s[A-Z][a-z]*)*"',
+                   r"(?<=\sthe\smovie\s)(.*?)(,|;|\.)", r"(?<=\sthe\ssong\s)(.*?)(,|;|\.)",
+                   r"(?<=\sthe\strack\s)(.*?)(,|;|\.)", r"(?<=\sthe\splay\s)(.*?)(,|;|\.)",
+                   r"(?<=\sthe\salbum\s)(.*?)(,|;|\.)", r"(?<=\sthe\sperformance\s)(.*?)(,|;|\.)"]
+    for expr in expressions:
+        new_name = re.findall(expr, text)
+        if new_name != [] and new_name not in name_list:
+            new_name = [i for i in new_name if i != '']
+            name_list.append(new_name)
+
+
 def human_name(text):
+    name_list = []
+    doc = nlp(text)
+    for ent in doc.ents:
+       if ent.label_ == 'PERSON':
+           name_list.append(ent.text)
+    for name in name_list:
+        if "@" in name:
+            name_list.remove(name)
+    return name_list
+
+'''
     name_list = []
     nltk_results = ne_chunk(pos_tag(word_tokenize(text)))
     for nltk_result in nltk_results:
@@ -79,8 +114,7 @@ def human_name(text):
                 name += nltk_result_leaf[0] + ' '
             name_list.append(name)
     return name_list
-
-
+'''
 def find_nominees(data, award):
     potential_nominees = {}
     for tweet in data:
@@ -105,6 +139,8 @@ def main():
                    'best actor', 'best actress', 'best screen play', 'best animated feature film', 'best television series']
     i = 1
     for name in award_names:
+        global global_award_pick
+        global_award_pick = name
         award = Award(i, name, 'actor')
         i = i+1
         nominees_dict = find_nominees(tweets, award)

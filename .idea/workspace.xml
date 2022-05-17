@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9c4c2b40-cacc-40b4-9795-da3ccccf29ff" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/337---Project-1-Twitter.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/337---Project-1-Twitter.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/get_winners.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/get_nominees.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_nominees.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/json_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/json_reader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nltkex.py" beforeDir="false" afterPath="$PROJECT_DIR$/nltkex.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
@@ -41,7 +39,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build" />
   </component>
-  <component name="RunManager" selected="Python.nltkex">
+  <component name="RunManager" selected="Python.get_nominees">
     <configuration name="basic_parser" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="337---Project-1-Twitter" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -85,6 +83,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="get_presenter" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="337---Project-1-Twitter" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/get_presenter.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="nltkex" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="337---Project-1-Twitter" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -98,28 +117,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/nltkex.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="337---Project-1-Twitter" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -151,11 +148,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.nltkex" />
         <item itemvalue="Python.get_nominees" />
+        <item itemvalue="Python.nltkex" />
+        <item itemvalue="Python.get_presenter" />
         <item itemvalue="Python.testNERT" />
         <item itemvalue="Python.basic_parser" />
-        <item itemvalue="Python.test" />
       </list>
     </recent_temporary>
   </component>
@@ -215,38 +212,38 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="137" y="18" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1651608804345" />
-    <state width="1345" height="248" key="GridCell.Tab.0.bottom" timestamp="1652738668567">
+    <state width="1345" height="223" key="GridCell.Tab.0.bottom" timestamp="1652757795276">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="248" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1652738668567" />
-    <state width="1345" height="248" key="GridCell.Tab.0.center" timestamp="1652738668567">
+    <state width="1345" height="223" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1652757795276" />
+    <state width="1345" height="223" key="GridCell.Tab.0.center" timestamp="1652757795276">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="248" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1652738668567" />
-    <state width="1345" height="248" key="GridCell.Tab.0.left" timestamp="1652738668567">
+    <state width="1345" height="223" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1652757795276" />
+    <state width="1345" height="223" key="GridCell.Tab.0.left" timestamp="1652757795276">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="248" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1652738668567" />
-    <state width="1345" height="248" key="GridCell.Tab.0.right" timestamp="1652738668567">
+    <state width="1345" height="223" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1652757795276" />
+    <state width="1345" height="223" key="GridCell.Tab.0.right" timestamp="1652757795276">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="248" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1652738668567" />
-    <state width="1345" height="223" key="GridCell.Tab.1.bottom" timestamp="1652737050303">
+    <state width="1345" height="223" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1652757795276" />
+    <state width="1345" height="223" key="GridCell.Tab.1.bottom" timestamp="1652757806752">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="223" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1652737050303" />
-    <state width="1345" height="223" key="GridCell.Tab.1.center" timestamp="1652737050303">
+    <state width="1345" height="223" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1652757806752" />
+    <state width="1345" height="223" key="GridCell.Tab.1.center" timestamp="1652757806752">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="223" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1652737050303" />
-    <state width="1345" height="223" key="GridCell.Tab.1.left" timestamp="1652737050303">
+    <state width="1345" height="223" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1652757806752" />
+    <state width="1345" height="223" key="GridCell.Tab.1.left" timestamp="1652757806752">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="223" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1652737050303" />
-    <state width="1345" height="223" key="GridCell.Tab.1.right" timestamp="1652737050303">
+    <state width="1345" height="223" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1652757806752" />
+    <state width="1345" height="223" key="GridCell.Tab.1.right" timestamp="1652757806752">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="223" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1652737050303" />
+    <state width="1345" height="223" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1652757806752" />
     <state x="184" y="6" key="SettingsEditor" timestamp="1651609175721">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -261,23 +258,28 @@
       <breakpoints>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>102</line>
+          <line>142</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>79</line>
-          <option name="timeStamp" value="7" />
+          <line>65</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>60</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>63</line>
+          <line>71</line>
           <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/get_nominees.py</url>
+          <line>70</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/get_nominees.py</url>
+          <line>117</line>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

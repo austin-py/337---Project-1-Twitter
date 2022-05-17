@@ -1,9 +1,12 @@
 import json
 import sys
+
+import get_nominees
 from json_reader import load_tweets, clean_and_save
 from host_parser import get_host
 from get_awards import get_awards
 from get_presenter import *
+from get_nominees import *
 
 def save_to_json(input_file):
     tweets = load_tweets(input_file)
@@ -16,11 +19,21 @@ def save_to_json(input_file):
     #award_names = get_awards(tweets)
     #print('{} awards found'.format(len(award_names)))
 
-    official_award_names = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
+    #official_award_names = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
+    official_award_names = ['best supporting actor', 'best supporting actress', 'best director', 'best motion picture',
+                   'best actor', 'best actress', 'best screen play', 'best animated feature film',
+                   'best television series']
+
     print('Number of official award names {}'.format(len(official_award_names)))
     award_to_present_dict = get_presenter_all_awards(input_file, official_award_names)
+    i = 1
     for award_name, presenters in award_to_present_dict.items():
         elements = {'nominees': [], 'winner': [], 'presenters': presenters}
+        get_nominees.global_award_pick = award_name
+        award = Award(i, award_name, 'actor')
+        i = i + 1
+        sorted_nominees_dict = sort_dict(find_nominees(tweets, award))
+        elements['nominees'] = list(sorted_nominees_dict.keys())
         award_data[award_name] = elements
 
     output['award_data'] = award_data

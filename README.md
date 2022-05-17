@@ -23,4 +23,5 @@ Dependencies:
 
 
 Other info: 
-    - 
+    -  On top of the minimum requirements we also ran sentiment analysis on the tweets, and gathered twitter voted "best 
+    dressed" and "worst dressed". This data can also be found in the human readable output file. 

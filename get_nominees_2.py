@@ -38,8 +38,8 @@ def nominate_data(tweets):
     return nominate_tweets
 
 def get_l_r_time(time_award):
-    left_time = (time_award - 300)*1000
-    right_time = (time_award + 200)*1000
+    left_time = (time_award - 120)*1000
+    right_time = (time_award + 90)*1000
     return left_time, right_time
 
 def nominate_related(t, time, name_words, left_time, right_time):
@@ -64,7 +64,7 @@ def nominate_related(t, time, name_words, left_time, right_time):
     for w in name_words:
         if w in t_lower:
             include = include + 1.0
-    if include / len(name_words) >= 0.9:
+    if include / len(name_words) >= 0.6:
         return True
 
     return False
@@ -89,7 +89,7 @@ def find_nominate(words):
     Output:
         - return the index of first word that contains nominate, return -1 otherwise
     """
-    nominate_related_words = ['nominat', 'nominees', 'win', 'won', 'lost', 'lose']
+    nominate_related_words = ['nomina', 'nominees', 'win', 'won', 'lost', 'lose']
 
     for i in range(len(words)):
         if any([(word in words[i].lower()) for word in nominate_related_words]):
@@ -107,7 +107,7 @@ def find_nominees(tweets, award, time_award):
     """
 
     possible_nominees = {}
-    max_back = 6
+    max_back = 8
     name_words = clean_award_name(award.name)
     left_time, right_time = get_l_r_time(time_award)
 
@@ -125,7 +125,7 @@ def find_nominees(tweets, award, time_award):
     return sorted_nominees
 
 
-def collect_left(words, nominate_index, max_back):
+def collect_right(words, nominate_index, max_back):
     res = []
     for i in range(max_back):
         j = nominate_index + i + 1
@@ -141,7 +141,7 @@ def collect_left(words, nominate_index, max_back):
             j = j+1
     return res
 
-def collect_right(words, nominate_index, max_back):
+def collect_left(words, nominate_index, max_back):
     res = []
     for i in range(max_back):
         j = nominate_index - i - 1
@@ -164,12 +164,12 @@ def find_nominee_in_sentence(sentence, max_back, possible_nominees):
     Output:
         - Add to the dictionary all the possible nominees found in the sentence
     """
-    sentence = re.sub("\.|\?|\!|\'|\"|\(|\)|\[|\]|,|-|@|:", ' ', sentence)
+    sentence = re.sub("\.|\?|\!|\'|\"|\(|\)|\[|\]|,|@|\*|\"", ' ', sentence)
     passive_voice_word = ['was', 'were', 'is', 'are', 'get']
     left_word = ['nominated', 'nominees']
     words = sentence.split()
     nominate_index = find_nominate(words)
-    if words[nominate_index] in left_word  and (words[nominate_index-1] in passive_voice_word or words[nominate_index-2] in passive_voice_word):
+    if (words[nominate_index] in left_word  and (words[nominate_index-1] in passive_voice_word or words[nominate_index-2] in passive_voice_word)):
         left_phrase = collect_left(words, nominate_index, max_back)
         for curr in left_phrase:
             if curr in possible_nominees.keys():
@@ -184,10 +184,16 @@ def find_nominee_in_sentence(sentence, max_back, possible_nominees):
                 possible_nominees[curr] = possible_nominees[curr] + 1
             else:
                 possible_nominees[curr] = 1
+        left_phrase = collect_left(words, nominate_index, max_back)
+        for curr in left_phrase:
+            if curr in possible_nominees.keys():
+                possible_nominees[curr] = possible_nominees[curr] + 1
+            else:
+                possible_nominees[curr] = 1
 
 
 
-def nominee_from_dict(answer, name,  max_count = 50, max_word = 8):
+def nominee_from_dict(answer, name,  max_count = 50, max_word = 15):
     """
     Input:
         - a sorted dictionary of possible nominee with occurence. max number of key to look through and max amount of match return
@@ -195,8 +201,10 @@ def nominee_from_dict(answer, name,  max_count = 50, max_word = 8):
         - Return the a list of best possible matches to nominee. (look for name and the return strings should not contains any stop words)
     """
     stop_words = ['it', 'she', 'he', 'they', 'this', 'that', 'you', 'I', 'we',
-                  'is', 'are', 'was', 'were', 'be', 'will',
-                  'awards', 'golden', 'globes'] + clean_award_name(name)
+                  'is', 'are', 'was', 'were', 'be', 'will', 'should',
+                  'his', 'her', 'them', 'us',
+                  'awards', 'golden', 'globes',
+                  'nominees', 'nominate', 'nominee', 'nominated', 'lose', 'lost'] + clean_award_name(name)
     res =[]
     i = 0
     j = 0
@@ -215,11 +223,15 @@ def nominee_from_dict(answer, name,  max_count = 50, max_word = 8):
             continue
 
         add = True
+        contain_all_english_words = True
         for w in k.split():
-            if len(w) < 3:
+            if len(w) < 3 or len(w) > 15:
                 add = False
 
-        if len(k.split()) < 5 and add:
+            if w.lower() not in english_words_lower_alpha_set:
+                contain_all_english_words = False
+
+        if len(k.split()) < 5 and add and not contain_all_english_words:
             res.append(k)
             i = i+1
 
@@ -231,7 +243,7 @@ def nominee_from_dict(answer, name,  max_count = 50, max_word = 8):
     nominee = []
     for s in res:
         nominee.append(s.lower())
-        if len(nominee) > 5:
+        if len(nominee) > 6:
             break
 
     return nominee

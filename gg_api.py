@@ -24,9 +24,9 @@ def get_hosts(year):
 def get_awards(year):
     '''Awards is a list of strings. Do NOT change the name
     of this function or what it returns.'''
-    fres = get_answers(year)
-    awards = list(fres['award_data'].keys())
-    return awards
+    tweets = load_tweets('gg%s_clean.json'%year)
+
+    return get_awards.get_awards(tweets)
 
 def get_nominees(year):
     '''Nominees is a dictionary with the hard coded award
@@ -45,7 +45,11 @@ def get_winner(year):
     names as keys, and each entry containing a single string.
     Do NOT change the name of this function or what it returns.'''
     # Your code here
+    fres = get_answers(year)
     winners = {}
+    for award_name in OFFICIAL_AWARDS_1819:
+        if award_name in fres['award_data']:
+            winners[award_name] = fres['award_data'][award_name]['winner']
     return winners
 
 def get_presenters(year):

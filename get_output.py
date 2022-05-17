@@ -7,6 +7,7 @@ from host_parser import get_host
 from get_awards import get_awards
 from get_presenter import *
 from get_nominees import *
+from os.path import exists
 
 def save_to_json(input_file):
     tweets = load_tweets(input_file)
@@ -19,10 +20,10 @@ def save_to_json(input_file):
     #award_names = get_awards(tweets)
     #print('{} awards found'.format(len(award_names)))
 
-    #official_award_names = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
-    official_award_names = ['best supporting actor', 'best supporting actress', 'best director', 'best motion picture',
-                   'best actor', 'best actress', 'best screen play', 'best animated feature film',
-                   'best television series']
+    official_award_names = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
+    # official_award_names = ['best supporting actor', 'best supporting actress', 'best director', 'best motion picture',
+    #                'best actor', 'best actress', 'best screen play', 'best animated feature film',
+    #                'best television series']
 
     print('Number of official award names {}'.format(len(official_award_names)))
     award_to_present_dict = get_presenter_all_awards(input_file, official_award_names)
@@ -46,7 +47,15 @@ def save_to_json(input_file):
     print('Finishing writing {}'.format(path))
 
 def save_to_txt(input_file):
-    save_to_json(input_file)
+    path = 'data/' + input_file
+    ans_path = path.replace('.json', '_answers.json')
+    if not exists(ans_path):
+        save_to_json(input_file)
+    with open(path, 'r') as answer_file:
+        dict_answers = json.load(answer_file)
+
+    print('hosts: {}'.format())
+
 
 
 
@@ -68,6 +77,7 @@ def main(*args):
 if __name__ == '__main__':
     #take multiple input files
     main('gg2013_clean.json', 'gg2015_clean.json')
+    #save_to_txt('gg2013_clean.json')
     #main()
 
 

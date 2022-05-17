@@ -1,5 +1,3 @@
-#TODO: test whether better with clean or original data... make sure get_output uses whichever is better 
-#TODO: finish cleaning function. 
 
 import re
 from unicodedata import name
@@ -43,7 +41,7 @@ def clean_awards(awards):
     
     return awards
 
-def get_awards(tweets):
+def return_awards(tweets):
     """
     Input: 
         - Takes a dictionary of tweets from json reader
@@ -190,7 +188,7 @@ def get_worst_dressed(tweets):
 
 if __name__ == '__main__':
     tweets = load_tweets(FILE)
-    award_names = get_awards(tweets)
+    award_names = return_awards(tweets)
     for i in range(26):
         print("Our ", i, "th pick for award_name is ", award_names[i], ".",sep="")
     temp = get_best_dressed(tweets)

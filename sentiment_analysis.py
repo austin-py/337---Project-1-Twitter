@@ -44,7 +44,7 @@ def relevant_data(tweets, people):
     tweet_set = set()
     for tweet in tweets:
         t = tweet['text'].lower()
-        contain_name = any([(name in t) for name in people])
+        contain_name = any([(name.lower() in t) for name in people])
         if not contain_name:
             continue
         words = t.split()
@@ -61,12 +61,21 @@ def relevant_data(tweets, people):
 
     return relevant_tweets
 
-def get_people(file_name):
+def get_all_hosts_winners_presenters(file_name):
     data = load_tweets(file_name)
-    people = set()
-    for k in data.keys():
-        for p in data[k]:
-            people.add(p)
+    presenters = set()
+    winners = set()
+    hosts = data['hosts']
+    award_data = data['award_data']
+    for k in award_data.keys():
+        for p in award_data[k]['presenters']:
+            presenters.add(p)
+        for p in award_data[k]['winner']:
+            winners.add(p)
+
+    presenters = list(presenters)
+    winners = list(winners)
+    people = hosts + presenters + winners
     return list(people)
 
 def get_sentiment_information_person(person, tweets_polarity, tweets):
@@ -96,7 +105,7 @@ def get_sentiment_information_person(person, tweets_polarity, tweets):
 
 def get_sentiment_information(tweets_file_name, people_file_name):
     tweets = load_tweets(tweets_file_name)
-    people = get_people(people_file_name)
+    people = get_all_hosts_winners_presenters(people_file_name)
     tweets = relevant_data(tweets, people)
     tweets_polarity = get_polarity_all_tweets(tweets)
 
@@ -107,7 +116,7 @@ def get_sentiment_information(tweets_file_name, people_file_name):
     polarity_result = {}
 
     for person in people:
-        avg_polarity, neg_percent, neu_percent, pos_percent =  get_sentiment_information_person(person, tweets_polarity, tweets)
+        avg_polarity, neg_percent, neu_percent, pos_percent =  get_sentiment_information_person(person.lower(), tweets_polarity, tweets)
         avg_polarity_people[person] = avg_polarity
         all_polarity_people[person] = [avg_polarity, neg_percent, neu_percent, pos_percent]
 
@@ -120,8 +129,8 @@ def get_sentiment_information(tweets_file_name, people_file_name):
 
 def main():
     start_time = time.time()
-    polarity_2013, mean_polarity_2013 = get_sentiment_information('gg2013_clean.json', 'presenters_gg2013_clean.json')
-    polarity_2015, mean_polarity_2015 = get_sentiment_information('gg2015_clean.json', 'presenters_gg2015_clean.json')
+    polarity_2013, mean_polarity_2013 = get_sentiment_information('gg2013_clean.json', 'ans_gg2013_clean.json')
+    polarity_2015, mean_polarity_2015 = get_sentiment_information('gg2015_clean.json', 'ans_gg2013_clean.json')
     print("--- %s seconds ---" % (time.time() - start_time))
 
 

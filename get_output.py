@@ -37,11 +37,17 @@ def save_to_json(input_file):
         award_data[award_name] = elements
 
     output['award_data'] = award_data
-    path = 'data/ans_' + input_file
+    path = 'data/' + input_file
+    path = path.replace('.json', '_answers.json')
+    #with open('data/gg%s_clean_answers.json' % year, 'r') as f:
     print('Writing answer to json file:')
     with open(path, 'w') as ans_file:
         json.dump(output, ans_file)
     print('Finishing writing {}'.format(path))
+
+def save_to_txt(input_file):
+    save_to_json(input_file)
+
 
 
 def main(*args):

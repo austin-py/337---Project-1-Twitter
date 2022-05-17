@@ -5,8 +5,6 @@ def main():
                    'best actor', 'best actress', 'best screen play', 'best animated feature film', 'best television series']
     i = 1
     for name in award_names:
-        global global_award_pick
-        global_award_pick = name
         award = Award(i, name, 'actor')
         i = i+1
         nominees_dict = find_nominees(tweets, award)

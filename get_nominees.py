@@ -134,7 +134,7 @@ def nominees_for_award(nom_dict):
 
 
 def main():
-    tweets = load_tweets(r'gg2013.json\gg2013.json')
+    tweets = load_tweets(r'gg2013.json')
     award_names = ['best supporting actor', 'best supporting actress', 'best director', 'best motion picture',
                    'best actor', 'best actress', 'best screen play', 'best animated feature film', 'best television series']
     i = 1

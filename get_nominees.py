@@ -6,6 +6,7 @@ import spacy
 from nltk import ne_chunk, pos_tag, word_tokenize
 from nltk.tree import Tree
 nlp = spacy.load("en_core_web_sm")
+from difflib import SequenceMatcher
 global global_award_pick
 
 def related_to_award(text, award):
@@ -43,16 +44,16 @@ def sort_dict(dictionary):
     return sorted_dict
 
 # caller function will manage splitting text, this function will only look at sentence chunks
-def nominee_candidates(text, cand_dict):
+def nominee_candidates(text, cand_dict, paf):
     candidate_lists = []
     keyphrasesb4 = [r"\swins", r"\snominated\sfor", r"\swinner\sof", r"\shaswon", r"\swas\snominated", r"\sis\snominated",
                     r"\swins\sthe", r"\slost", r"\sloses\sto",
                     r"\slost\sto", r"\sdid\snot\swin", r"\sdidn't\swin", r"\sgoes\sto", r"\sup\sfor", r"\sbeats"
-                    r"\stakes\shome", r"\sbrings\shome", r"\sbeat\sout", r"\sbeats\sout"]
+                    r"\stakes\shome", r"\sbrings\shome", r"\sbeat\sout", r"\sbeats\sout", r"\spicks\sfor"]
 
     keyphrasesaftr = [r"\snominated", r"\shas\snominated", r"\shave\snominated", r"\snominates", r"\scongratulations\sto",
                       r"\scongrats\sto", r"\sgoes\sto", r"\sover", r"\sbeats", r"\scan't\sbelieve", r"\sbeat\sout",
-                      r"\sbeats\sout", r"...\s"]
+                      r"\sbeats\sout", r"...\s", r"\spicks\sfor"]
     redflag_phrases = []
     for kp in keyphrasesaftr:
         fa_str = "(?<=" + kp + ").*"
@@ -71,7 +72,11 @@ def nominee_candidates(text, cand_dict):
             global global_award_pick
             if global_award_pick == "best motion picture":
                 stop = True
-            locn = human_name(sentence)
+            if paf:
+                locn = human_name(sentence)
+            else:
+                locn = non_human_name(sentence)
+
             for cand in locn:
                 if cand in cand_dict:
                     cand_dict[cand] += 1
@@ -88,9 +93,14 @@ def non_human_name(text):
                    r"(?<=\sthe\salbum\s)(.*?)(,|;|\.)", r"(?<=\sthe\sperformance\s)(.*?)(,|;|\.)"]
     for expr in expressions:
         new_name = re.findall(expr, text)
-        if new_name != [] and new_name not in name_list:
+        if (new_name != [] and new_name != None) and new_name not in name_list:
             new_name = [i for i in new_name if i != '']
-            name_list.append(new_name)
+            if hasattr(new_name, '__iter__'):
+                for tpl in new_name:
+                    name_list.append(re.sub(r'[^a-zA-Z\s]', '', " ".join(tpl)))
+            else:
+                name_list.append(re.sub(r'[^a-zA-Z\s]', '', " ".join(new_name)))
+    return name_list
 
 
 def human_name(text):
@@ -117,15 +127,35 @@ def human_name(text):
 '''
 def find_nominees(data, award):
     potential_nominees = {}
+    person_award_flag = False
+    person_award_kps = ["actor", "actress", "artist", "director", "performance", "singer", "rapper", "producer"]
+    for kp in person_award_kps:
+        if kp in award.name:
+            person_award_flag = True
     for tweet in data:
         text = tweet['text']
         if related_to_award(text, award):
-            sentences = re.split("\.|\?|\!", text)
+            sentences = re.split(r"[.?!]", text)
             for sentence in sentences:
                 # sentence = sentence.lower() #this would make name recognition impossible using nltk
-                nominee_candidates(sentence, potential_nominees)
+                nominee_candidates(sentence, potential_nominees, person_award_flag)
+    potential_nominees = sort_dict(potential_nominees)
+    return potential_nominees
+    #return clean_similar_noms(potential_nominees)
 
-    return sort_dict(potential_nominees)
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
+
+
+def clean_similar_noms(nom_dict):
+    for candi in nom_dict:
+        for candj in nom_dict:
+            if similar(candi, candj) >= .54 and candi != candj and (nom_dict[candi] != -1 and nom_dict[candj] != -1):
+                if nom_dict[candi] > nom_dict[candj]:
+                    nom_dict[candi] += nom_dict[candj]
+                    nom_dict[candj] = -1
+                else:
+                    break
 
 
 def nominees_for_award(nom_dict):
@@ -144,6 +174,9 @@ def main():
         award = Award(i, name, 'actor')
         i = i+1
         nominees_dict = find_nominees(tweets, award)
+        print(name + " Nominees: ")
+        print('\n')
+        nominees_dict = {key: val for key, val in nominees_dict.items() if val >= 15}
         nominees_for_award(nominees_dict)
         # nominees = nominees_for_award(nominees_dict)
         '''

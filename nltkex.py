@@ -4,6 +4,7 @@ from nltk import ne_chunk, pos_tag, word_tokenize
 from nltk.tree import Tree
 from nltk.corpus import words
 import spacy
+from difflib import SequenceMatcher
 
 #eng_dict = enchant.Dict("en_US")
 #print(eng_dict.check("Hugh"))
@@ -17,6 +18,16 @@ doc2 = nlp('Modern Family and Django Unchained')
 print(doc2.ents[0].label_, doc2.ents[1].label_)
 for ent in doc.ents:
     print(ent.text, ent.start_char, ent.end_char, ent.label_)
+
+
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
+
+
+print(similar('Django', 'Django Unchained'))
+print(similar('Anne Hathaway', 'Hugh Jackman'))
+print(similar('Ben Affleck', 'Woooooooo Ben Affleck'))
+
 '''
 text = 
 # quotes go here

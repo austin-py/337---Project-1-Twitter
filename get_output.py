@@ -237,7 +237,8 @@ def save_to_txt(year):
         f.write("Found awards:\n")
         for award in answers['awards']:
             f.write('     -{}\n'.format(award))
-            
+        
+        f.write('\n\n')
         award_data = answers['award_data']
         for key, value in award_data.items():
             f.write('Award: {}\n'.format(key.title()))

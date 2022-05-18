@@ -6,10 +6,10 @@ from json_reader import load_tweets, clean_and_save
 from host_parser import get_host
 from get_awards import return_awards, get_best_dressed, get_worst_dressed
 from get_presenter import *
-from get_nominees_2 import *
+#from get_nominees_2 import *
 from get_winner_2 import *
 from sentiment_analysis import *
-#from get_nominees import *
+from get_nominees import *
 #from get_winners import *
 from os.path import exists
 
@@ -231,7 +231,7 @@ def save_to_txt(year):
     with open(ans_path, 'r') as f:
         answers = json.load(f)
 
-    with open('data/gg%s_answers.txt' % year, 'w') as f:
+    with open('data/gg%s_answers.txt' % year, 'w', encoding="utf-8") as f:
         f.write('Hosts: {}\n'.format(', '.join(answers['hosts'])))
         f.write('\n')
         f.write("Found awards:\n")

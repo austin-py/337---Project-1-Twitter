@@ -70,8 +70,7 @@ def get_all_hosts_winners_presenters(file_name):
     for k in award_data.keys():
         for p in award_data[k]['presenters']:
             presenters.add(p)
-        for p in award_data[k]['winner']:
-            winners.add(p)
+        winners.add(p)
 
     presenters = list(presenters)
     winners = list(winners)
@@ -123,14 +122,14 @@ def get_sentiment_information(tweets_file_name, people_file_name):
     avg_polarity_people = sort_dict(avg_polarity_people)
     for k in avg_polarity_people.keys():
         polarity_result[k] = all_polarity_people[k]
-        print('{}: Average sentiment polarity - {:.2f}, negative tweets percentage - {:.2f}, neutral tweets percentage - {:.2f}, positive tweets percentage - {:.2f}'.format(k, all_polarity_people[k][0], all_polarity_people[k][1], all_polarity_people[k][2], all_polarity_people[k][3]))
+        #print('{}: Average sentiment polarity - {:.2f}, negative tweets percentage - {:.2f}, neutral tweets percentage - {:.2f}, positive tweets percentage - {:.2f}'.format(k, all_polarity_people[k][0], all_polarity_people[k][1], all_polarity_people[k][2], all_polarity_people[k][3]))
 
     return polarity_result, np.mean(tweets_polarity)
 
 def main():
     start_time = time.time()
-    polarity_2013, mean_polarity_2013 = get_sentiment_information('gg2013_clean.json', 'ans_gg2013_clean.json')
-    polarity_2015, mean_polarity_2015 = get_sentiment_information('gg2015_clean.json', 'ans_gg2013_clean.json')
+    polarity_2013, mean_polarity_2013 = get_sentiment_information('gg2013_clean.json', 'gg2013_answers.json')
+    polarity_2015, mean_polarity_2015 = get_sentiment_information('gg2015_clean.json', 'gg2015_answers.json')
     print("--- %s seconds ---" % (time.time() - start_time))
 
 

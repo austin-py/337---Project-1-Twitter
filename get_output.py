@@ -8,9 +8,22 @@ from get_awards import return_awards
 from get_presenter import *
 from get_nominees_2 import *
 from get_winner_2 import *
+from sentiment_analysis import *
 #from get_nominees import *
 #from get_winners import *
 from os.path import exists
+
+from textblob import TextBlob
+import nltk
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+nltk.download('punkt')
+
+
 
 def save_to_json(input_file):
     tweets = load_tweets(input_file)
@@ -230,8 +243,22 @@ def save_to_txt(year):
                     f.write('{}: {}\n'.format(k.capitalize(), list_to_string.title()))
                 else:
                     f.write('{}: {}\n'.format(k.capitalize(), v.title()))
-            f.write('\n')
+            f.write('\n-----------------------------------------------\n')
 
+        # Sentiment Analysis
+        f.write('SENTIMENT ANALYSIS OF HOSTS, PRESENTERS AND WINNERS OF YEAR {}.\n'.format(year))
+        polarity, mean_polarity = get_sentiment_information('gg'+ year + '_clean.json', 'gg'+ year + '_answers.json')
+        f.write('The average polarity (positive or negative sentiments) for the whole tweets corpora in {} is {}.\n'.format(year, mean_polarity))
+        if mean_polarity >= 0:
+            f.write('This means that overall sentiment reaction toward this year awards is generally positive.\n')
+        else:
+            f.write('This means that overall sentiment reaction toward this year awards is generally negative.\n')
+
+        f.write('\nThe following are sentiment statistics of each hosts, presenters, and winners.\n')
+        f.write('These statistics include average sentiment polarity, percentage of negative tweets, percentage of neutral tweets, percentage of positive tweets.\n')
+        f.write('The list is presented in an decreasing average sentiment polarity orders:\n\n')
+        for k in polarity.keys():
+            f.write('{}: Average sentiment polarity - {:.2f}, negative tweets percentage - {:.2f}, neutral tweets percentage - {:.2f}, positive tweets percentage - {:.2f}.\n'.format(k, polarity[k][0], polarity[k][1], polarity[k][2], polarity[k][3]))
 
 def main(*args):
     if len(sys.argv) > 1:

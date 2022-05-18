@@ -255,7 +255,6 @@ def get_presenter_all_awards(tweet_file_name, award_names):
         answer = find_presenter(present_tweets, award, time_happen)
         presenter = presenter_from_dict(answer)
         presenters[name] = presenter
-        print(name + ": " + str(presenter))
 
     with open("data/presenters_" + file_namw_wth_json + ".json", "w") as outfile:
         json.dump(presenters, outfile)

@@ -8,13 +8,15 @@ from get_awards import return_awards
 from get_presenter import *
 from get_nominees_2 import *
 from get_winner_2 import *
+#from get_nominees import *
+#from get_winners import *
 from os.path import exists
 
 def save_to_json(input_file):
     tweets = load_tweets(input_file)
-    output_file = input_file.replace('.json', '_clean.json')
-    clean_and_save(input_file, output_file)
-    clean_tweets = load_tweets(output_file)
+    clean_file = input_file.replace('.json', '_clean.json')
+    clean_and_save(input_file, clean_file)
+    clean_tweets = load_tweets(clean_file)
     output = {}
     hosts = get_host(clean_tweets)
     output['hosts'] = hosts
@@ -48,8 +50,9 @@ def save_to_json(input_file):
                             'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
 
     print('Number of official award names {}'.format(len(OFFICIAL_AWARDS_1315)))
-    award_to_present_dict = get_presenter_all_awards(input_file, OFFICIAL_AWARDS_1315)
-    award_to_nominee_dict = get_nominee_all_awards(input_file, OFFICIAL_AWARDS_1315)
+    award_to_present_dict = get_presenter_all_awards(clean_file, OFFICIAL_AWARDS_1315)
+    award_to_nominee_dict = get_nominee_all_awards(clean_file, OFFICIAL_AWARDS_1315)
+
 
     nominees_dict_2013 = {
         'best screenplay - motion picture': ['zero dark thirty', 'lincoln', 'silver linings playbook', 'argo',
@@ -247,9 +250,8 @@ def main(*args):
 
 if __name__ == '__main__':
     #take multiple input files
-    #main('gg2013.json', 'gg2015.json')
+    main('gg2013.json', 'gg2015.json')
     save_to_txt('2013')
-    #save_to_txt('2015')
-    #main()
+    save_to_txt('2015')
 
 

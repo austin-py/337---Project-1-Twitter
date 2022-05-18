@@ -22,11 +22,11 @@ def get_winner_all_awards(tweet_file_name, award_names):
         #print('\n')
         # nominees_dict = {key: val for key, val in nominees_dict.items() if val >= 11}
         def_not_nominees = ["#GoldenGlobes", "Golden Globes", "GoldenGlobes", "Grammys", "Emmys", "oscar", "Oscar"]
-        nominees_dict = {key: val for key, val in nominees_dict.items() if (val != -1 and (key.lower() not in award_names or key not in def_not_nominees))}
+        nominees_dict = {key: val for key, val in nominees_dict.items() if (val != -1 and (not an_award_name(key.lower(), award_names)) and key not in def_not_nominees)}
         new_dict = {}
         j = 0
         for key in nominees_dict:
-            if j < 1:
+            if j < 5:
                 new_dict[key] = nominees_dict[key]
                 j += 1
             else:

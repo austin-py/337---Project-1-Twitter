@@ -147,7 +147,7 @@ def non_human_name(text):
                    r"(?<=\sthe\salbum\s)(.*?)(,|;|\.)", r"(?<=\sthe\sperformance\s)(.*?)(,|;|\.)"]
     for expr in expressions:
         new_name = re.findall(expr, text)
-        if (new_name != [] and new_name != None) and new_name not in name_list:
+        if new_name != [] and new_name not in name_list:
             new_name = [i for i in new_name if i != '']
             if hasattr(new_name, '__iter__'):
                 for tpl in new_name:
@@ -182,7 +182,7 @@ def human_name(text):
 def find_nominees(data, award, time_award):
     potential_nominees = {}
     person_award_flag = False
-    person_award_kps = ["actor", "actress", "artist", "director", "performance", "singer", "rapper", "producer"]
+    person_award_kps = ["actor", "actress", "artist", "director", "performance", "singer", "rapper", "producer", 'cecil b. demille award']
     for kp in person_award_kps:
         if kp in award.name:
             person_award_flag = True
@@ -255,6 +255,24 @@ def nominate_data(tweets):
 
     return nominate_tweets
 
+def an_award_name(cand, text):
+    cand_list = cand.split()
+    bool_vec = cand_list
+    for word in cand_list:
+        for award in text:
+            if word not in award.split():
+                continue
+            else:
+                bool_vec[cand_list.index(word)] = True
+                break
+    for e in bool_vec:
+        if not isinstance(e, bool):
+            return False
+    return True
+
+
+
+
 
 def get_nominee_all_awards(tweet_file_name, award_names):
     file_name_length = len(tweet_file_name)
@@ -277,7 +295,7 @@ def get_nominee_all_awards(tweet_file_name, award_names):
         #print('\n')
         # nominees_dict = {key: val for key, val in nominees_dict.items() if val >= 11}
         def_not_nominees = ["#GoldenGlobes", "Golden Globes", "GoldenGlobes", "Grammys", "Emmys", "oscar", "Oscar"]
-        nominees_dict = {key: val for key, val in nominees_dict.items() if (val != -1 and (key.lower() not in award_names or key not in def_not_nominees))}
+        nominees_dict = {key: val for key, val in nominees_dict.items() if (val != -1 and (not an_award_name(key.lower(), award_names)) and key not in def_not_nominees)}
         new_dict = {}
         j = 0
         for key in nominees_dict:

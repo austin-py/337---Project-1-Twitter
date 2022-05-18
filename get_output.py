@@ -4,7 +4,7 @@ import sys
 import get_nominees
 from json_reader import load_tweets, clean_and_save
 from host_parser import get_host
-from get_awards import return_awards
+from get_awards import return_awards, get_best_dressed, get_worst_dressed
 from get_presenter import *
 from get_nominees_2 import *
 from get_winner_2 import *
@@ -260,6 +260,14 @@ def save_to_txt(year):
         for k in polarity.keys():
             f.write('{}: Average sentiment polarity - {:.2f}, negative tweets percentage - {:.2f}, neutral tweets percentage - {:.2f}, positive tweets percentage - {:.2f}.\n'.format(k, polarity[k][0], polarity[k][1], polarity[k][2], polarity[k][3]))
 
+        # Best/Worst dressed. 
+
+        f.write('\n\nRed Carpet Awards:\n')
+        tweets = load_tweets('gg'+year+'.json')
+        f.write('The twitter voted best dressed was',get_best_dressed(tweets))
+        f.write('The twitter voted worst dressed was',get_worst_dressed(tweets))
+
+        
 def main(*args):
     if len(sys.argv) > 1:
         print('Running {}:'.format(sys.argv[0]))

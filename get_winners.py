@@ -304,7 +304,7 @@ def get_winner_all_awards(tweet_file_name, award_names):
             else:
                 break
         #winners_for_award(new_dict)
-        winner = [key.lower() for key in new_dict.keys()]
+        winner = [key.lower() for key in new_dict.keys()][0]
         winners[name] = winner
     with open("data/winners_" + file_name_wth_json + ".json", "w") as outfile:
         json.dump(winners, outfile)

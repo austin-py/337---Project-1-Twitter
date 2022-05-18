@@ -1,7 +1,7 @@
 from host_parser import *
 from get_nominees import *
 from get_presenter import *
-from get_awards import *
+from get_awards import return_awards
 from get_winners import *
 '''Version 0.35'''
 
@@ -10,7 +10,7 @@ OFFICIAL_AWARDS_1819 = ['best motion picture - drama', 'best motion picture - mu
 
 
 def get_answers(year):
-    with open('data/gg%s_clean_answers.json'%year, 'r') as f:
+    with open('data/gg%s_answers.json'%year, 'r') as f:
         fres = json.load(f)
     return fres
 
@@ -24,9 +24,9 @@ def get_hosts(year):
 def get_awards(year):
     '''Awards is a list of strings. Do NOT change the name
     of this function or what it returns.'''
-    tweets = load_tweets('gg%s_clean.json'%year)
-
-    return get_awards.get_awards(tweets)
+    fres = get_answers(year)
+    awards = fres['awards']
+    return awards
 
 def get_nominees(year):
     '''Nominees is a dictionary with the hard coded award
@@ -34,7 +34,7 @@ def get_nominees(year):
     the name of this function or what it returns.'''
     fres = get_answers(year)
     nominees = {}
-    for award_name in OFFICIAL_AWARDS_1819:
+    for award_name in OFFICIAL_AWARDS_1315:
         if award_name in fres['award_data']:
             nominees[award_name] = fres['award_data'][award_name]['nominees']
 
@@ -47,7 +47,7 @@ def get_winner(year):
     # Your code here
     fres = get_answers(year)
     winners = {}
-    for award_name in OFFICIAL_AWARDS_1819:
+    for award_name in OFFICIAL_AWARDS_1315:
         if award_name in fres['award_data']:
             winners[award_name] = fres['award_data'][award_name]['winner']
     return winners
@@ -58,7 +58,7 @@ def get_presenters(year):
     name of this function or what it returns.'''
     fres = get_answers(year)
     presenters = {}
-    for award_name in OFFICIAL_AWARDS_1819:
+    for award_name in OFFICIAL_AWARDS_1315:
         if award_name in fres['award_data']:
             presenters[award_name] = fres['award_data'][award_name]['presenters']
     return presenters

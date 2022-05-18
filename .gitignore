@@ -50,3 +50,5 @@ gg2013answers.json
 *.json
 *.txt
 *.txt
+*.xml
+*.iml

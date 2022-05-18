@@ -234,6 +234,10 @@ def save_to_txt(year):
     with open('data/gg%s_answers.txt' % year, 'w') as f:
         f.write('Hosts: {}\n'.format(', '.join(answers['hosts'])))
         f.write('\n')
+        f.write("Found awards:\n")
+        for award in answers['awards']:
+            f.write('     -{}\n'.format(award))
+            
         award_data = answers['award_data']
         for key, value in award_data.items():
             f.write('Award: {}\n'.format(key.title()))
@@ -264,8 +268,8 @@ def save_to_txt(year):
 
         f.write('\n\nRed Carpet Awards:\n')
         tweets = load_tweets('gg'+year+'.json')
-        f.write('The twitter voted best dressed was: {}'.format(get_best_dressed(tweets)))
-        f.write('The twitter voted worst dressed was: {}'.format(get_worst_dressed(tweets)))
+        f.write('The twitter voted best dressed was: {}\n'.format(get_best_dressed(tweets)))
+        f.write('The twitter voted worst dressed was: {}\n'.format(get_worst_dressed(tweets)))
 
 
 def main(*args):

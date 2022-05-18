@@ -5,8 +5,13 @@
 Github Repo: https://github.com/austin-py/337---Project-1-Twitter
 
 Files to run: 
-    - get_output.py is the only file necessary to generate output. It calls all of the helper functions we wrote and compiles them into a . The file can be called from the command line after
-    importing. For example: 
+    - get_output.py is the only file necessary to generate output. It calls all of the helper functions we wrote and compiles them into a . This file could easily 
+      be run from within the actual python file by modifying the input under the  "if __name__ == '__main__':" statement.  The default we have it set to is to run 
+      save to json and save to text for both the 2013 and 2015 data.  We have the data housed in the '/data/' subdirectory and our code relies on this. 
+
+
+    - Additionally, the file can be called from the command line after importing. 
+    For example: 
         > python3 
         > import get_output.py as output
         > output.save_to_json('INPUT FILE') # This gives a json version of the output 
@@ -14,12 +19,12 @@ Files to run:
 
     In this case input file needs to be a json object in the data folder. The output will appear in the data folder as the file name that was given plus "_answers.json". The year for save_to_text needs to correspond to a ggYEAR.json file in the data folder
 
-    Additionally, this file could easily be run from within the actual python file by modifying the input under the 
-    "if __name__ == '__main__':" statement.  The default we have it set to is to run save to json and save to text for both the 2013 and 2015 data. 
-
-    The output of get_output is found in: 
+   
+    The output of get_output is found in the data subdirectory with the following file: 
         ggYEAR_answers.json for the data output
         ggYEAR_answers.txt for the text output 
+
+
 
 Dependencies: 
     - We used a number of python packages within our code. These requirements can be found in requirements.txt and can 

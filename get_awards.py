@@ -130,7 +130,7 @@ def get_best_dressed(tweets):
     statements.sort(key = lambda x: x[1],reverse = True)
     names.sort(key= lambda x: x[1],reverse= True)
 
-    return names
+    return names[0][0]
 
 def get_worst_dressed(tweets):
     """
@@ -175,7 +175,7 @@ def get_worst_dressed(tweets):
         # print(i)
     names.sort(key= lambda x: x[1],reverse= True)
 
-    return names
+    return names[0][0]
 
 
     

@@ -75,7 +75,7 @@ def sort_dict(dictionary):
     Output:
         - A sorted dictionary by value
     """
-    sorted_keys = sorted(dictionary, key=dictionary.get, reverse = True)
+    sorted_keys = sorted(dictionary, key=dictionary.get, reverse= True)
     sorted_dict = {}
     for k in sorted_keys:
         sorted_dict[k] = dictionary[k]

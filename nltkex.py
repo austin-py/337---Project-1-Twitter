@@ -27,6 +27,8 @@ def similar(a, b):
 print(similar('Django', 'Django Unchained'))
 print(similar('Anne Hathaway', 'Hugh Jackman'))
 print(similar('Ben Affleck', 'Woooooooo Ben Affleck'))
+print(similar('Amy', 'Amy Poehler'))
+
 
 '''
 text = 

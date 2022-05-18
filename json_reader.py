@@ -72,7 +72,7 @@ def clean_and_save(input_file, output_file):
 def main(*args):
     #you can use terminal to run the script e.g., python json_read.py 'gg2013'
     print('Running {}'.format(sys.argv[0]))
-    clean_and_save(sys.argv[1])
+    clean_and_save(sys.argv[1], sys.argv[1] + '_clean.json')
     print('Finish running {}'.format(sys.argv[0]))
 
 

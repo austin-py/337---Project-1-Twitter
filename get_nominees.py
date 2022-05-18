@@ -7,7 +7,6 @@ from nltk import ne_chunk, pos_tag, word_tokenize
 from nltk.tree import Tree
 nlp = spacy.load("en_core_web_sm")
 from difflib import SequenceMatcher
-global global_award_pick
 
 def related_to_award(text, award):
     """
@@ -69,9 +68,6 @@ def nominee_candidates(text, cand_dict, paf):
             candidate_lists.append(new_cand)
     for candidate_list in candidate_lists:
         for sentence in candidate_list:
-            global global_award_pick
-            if global_award_pick == "best motion picture":
-                stop = True
             if paf:
                 locn = human_name(sentence)
             else:
@@ -169,8 +165,6 @@ def main():
                    'best actor', 'best actress', 'best screen play', 'best animated feature film', 'best television series']
     i = 1
     for name in award_names:
-        global global_award_pick
-        global_award_pick = name
         award = Award(i, name, 'actor')
         i = i+1
         nominees_dict = find_nominees(tweets, award)

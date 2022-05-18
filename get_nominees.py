@@ -179,6 +179,8 @@ def human_name(text):
             name_list.append(name)
     return name_list
 '''
+
+
 def find_nominees(data, award, time_award):
     potential_nominees = {}
     person_award_flag = False
@@ -255,6 +257,7 @@ def nominate_data(tweets):
 
     return nominate_tweets
 
+
 def an_award_name(cand, text):
     cand_list = cand.split()
     bool_vec = cand_list
@@ -269,9 +272,6 @@ def an_award_name(cand, text):
         if not isinstance(e, bool):
             return False
     return True
-
-
-
 
 
 def get_nominee_all_awards(tweet_file_name, award_names):

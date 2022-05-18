@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9c4c2b40-cacc-40b4-9795-da3ccccf29ff" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/nominees_gg2015_clean.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/nominees_gg2015_clean.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/get_nominees.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_nominees.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sentiment_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/sentiment_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/get_winners.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_winners.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +37,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build" />
   </component>
-  <component name="RunManager" selected="Python.get_nominees">
+  <component name="RunManager" selected="Python.get_winners">
     <configuration name="get_nominees" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="337---Project-1-Twitter" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -146,9 +145,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.get_winners" />
         <item itemvalue="Python.get_nominees" />
         <item itemvalue="Python.get_nominees_2" />
-        <item itemvalue="Python.get_winners" />
         <item itemvalue="Python.nltkex" />
         <item itemvalue="Python.get_presenter" />
       </list>
@@ -210,38 +209,38 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="137" y="18" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1651608804345" />
-    <state width="1345" height="146" key="GridCell.Tab.0.bottom" timestamp="1652893002328">
+    <state width="1345" height="264" key="GridCell.Tab.0.bottom" timestamp="1652896638317">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="146" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1652893002328" />
-    <state width="1345" height="146" key="GridCell.Tab.0.center" timestamp="1652893002328">
+    <state width="1345" height="264" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1652896638317" />
+    <state width="1345" height="264" key="GridCell.Tab.0.center" timestamp="1652896638317">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="146" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1652893002328" />
-    <state width="1345" height="146" key="GridCell.Tab.0.left" timestamp="1652893002328">
+    <state width="1345" height="264" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1652896638317" />
+    <state width="1345" height="264" key="GridCell.Tab.0.left" timestamp="1652896638317">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="146" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1652893002328" />
-    <state width="1345" height="146" key="GridCell.Tab.0.right" timestamp="1652893002328">
+    <state width="1345" height="264" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1652896638317" />
+    <state width="1345" height="264" key="GridCell.Tab.0.right" timestamp="1652896638317">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="146" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1652893002328" />
-    <state width="1345" height="124" key="GridCell.Tab.1.bottom" timestamp="1652893021252">
+    <state width="1345" height="264" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1652896638317" />
+    <state width="1345" height="225" key="GridCell.Tab.1.bottom" timestamp="1652894461478">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="124" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1652893021252" />
-    <state width="1345" height="124" key="GridCell.Tab.1.center" timestamp="1652893021252">
+    <state width="1345" height="225" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1652894461478" />
+    <state width="1345" height="225" key="GridCell.Tab.1.center" timestamp="1652894461477">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="124" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1652893021252" />
-    <state width="1345" height="124" key="GridCell.Tab.1.left" timestamp="1652893021252">
+    <state width="1345" height="225" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1652894461477" />
+    <state width="1345" height="225" key="GridCell.Tab.1.left" timestamp="1652894461477">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="124" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1652893021252" />
-    <state width="1345" height="124" key="GridCell.Tab.1.right" timestamp="1652893021252">
+    <state width="1345" height="225" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1652894461477" />
+    <state width="1345" height="225" key="GridCell.Tab.1.right" timestamp="1652894461477">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="124" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1652893021252" />
+    <state width="1345" height="225" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1652894461477" />
     <state x="184" y="6" key="SettingsEditor" timestamp="1651609175721">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -266,7 +265,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>194</line>
+          <line>196</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -286,7 +285,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>211</line>
+          <line>213</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -296,13 +295,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>283</line>
-          <option name="timeStamp" value="30" />
+          <line>292</line>
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>258</line>
-          <option name="timeStamp" value="32" />
+          <line>299</line>
+          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

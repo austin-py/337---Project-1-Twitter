@@ -26,7 +26,6 @@ def nominate_data(tweets):
     tweet_set = set()
     for tweet in tweets:
         t = tweet['text'].lower()
-        t_split = t.split()
         if any([(word in t) for word in nominate_related_words]):
             words = t.split()
             index = find_nominate(words)
@@ -271,11 +270,11 @@ def get_caps_num(t):
 
 def get_nominee_all_awards(tweet_file_name, award_names):
     file_name_length = len(tweet_file_name)
-    file_namw_wth_json = tweet_file_name[0:file_name_length - 5]
+    file_name_wth_json = tweet_file_name[0:file_name_length - 5]
     get_time(tweet_file_name, award_names)
 
 
-    time_award = load_tweets(file_namw_wth_json + "_award_time.json")
+    time_award = load_tweets(file_name_wth_json + "_award_time.json")
 
     tweets = load_tweets(tweet_file_name)
 
@@ -290,9 +289,8 @@ def get_nominee_all_awards(tweet_file_name, award_names):
         answer = find_nominees(nominate_tweets, award, time_happen)
         nominee = nominee_from_dict(answer, name)
         nominees[name] = nominee
-        print(name + ": " + str(nominee))
 
-    with open("data/nominees_" + file_namw_wth_json + ".json", "w") as outfile:
+    with open("data/nominees_" + file_name_wth_json + ".json", "w") as outfile:
         json.dump(nominees, outfile)
 
     return nominees

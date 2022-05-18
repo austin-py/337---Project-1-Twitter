@@ -5,12 +5,12 @@
 Github Repo: https://github.com/austin-py/337---Project-1-Twitter
 
 Files to run: 
-    - Output.py is the only file necessary to generate output. The file can be called from the command line after
+    - get_output.py is the only file necessary to generate output. The file can be called from the command line after
     importing. For example: 
         > python3 
         > import get_output.py as output
-        > output.save_to_json('INPUT FILE')
-        > output.save_to_text('INPUT FILE')
+        > output.save_to_json('INPUT FILE') # This gives a json version of the output 
+        > output.save_to_text('INPUT FILE') # This gives a human-readable version of the output. 
 
     In this case input file needs to be a json object in the data folder. The output will appear in the data folder as the file name that was given plus "_answers.json". 
 
@@ -18,7 +18,9 @@ Files to run:
     "if __name__ == '__main__':" statement.  
 
 Dependencies: 
-    - We used a number of python packages within our code. These requirements can be found in requirements.txt and can be installed using "pip3 install -r requirements.txt". On some systems this might just be "pip install -r requirements.txt" but we found that for our laptops it was pip3. 
+    - We used a number of python packages within our code. These requirements can be found in requirements.txt and can 
+    be installed using "pip3 install -r requirements.txt". On some systems this might just be "pip install -r 
+    requirements.txt" but we found that for our laptops it was pip3. 
     - We were using the latest version of pip. 
 
 

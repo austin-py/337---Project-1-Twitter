@@ -18,8 +18,8 @@ Files to run:
     "if __name__ == '__main__':" statement.  The default we have it set to is to run save to json and save to text for both the 2013 and 2015 data. 
 
     The output of get_output is found in: 
-        for the data output
-        for the text output 
+        ggYEAR_answers.json for the data output
+        ggYEAR_answers.txt for the text output 
 
 Dependencies: 
     - We used a number of python packages within our code. These requirements can be found in requirements.txt and can 
@@ -27,7 +27,7 @@ Dependencies:
     requirements.txt" but we found that for our laptops it was pip3. 
     - We were using the latest version of pip. 
 
-    - One more requirement is to download "en_core_web_sm" which can be done with the command "python -m spacy download en_core_web_sm" 
+    - One more requirement is to download "en_core_web_sm" which can be done with the command "python3 -m spacy download en_core_web_sm"(on mac) or "python -m spacy download en_core_web_sm"(on pc).  
 
 
 Other info: 

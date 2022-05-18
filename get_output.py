@@ -264,10 +264,10 @@ def save_to_txt(year):
 
         f.write('\n\nRed Carpet Awards:\n')
         tweets = load_tweets('gg'+year+'.json')
-        f.write('The twitter voted best dressed was',get_best_dressed(tweets))
-        f.write('The twitter voted worst dressed was',get_worst_dressed(tweets))
+        f.write('The twitter voted best dressed was: {}'.format(get_best_dressed(tweets)))
+        f.write('The twitter voted worst dressed was: {}'.format(get_worst_dressed(tweets)))
 
-        
+
 def main(*args):
     if len(sys.argv) > 1:
         print('Running {}:'.format(sys.argv[0]))

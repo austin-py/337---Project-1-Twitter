@@ -1,39 +1,42 @@
 from get_nominees import *
+
+
 def get_nominee_all_awards(tweet_file_name, award_names):
     file_name_length = len(tweet_file_name)
-    file_namw_wth_json = tweet_file_name[0:file_name_length - 5]
+    file_name_wth_json = tweet_file_name[0:file_name_length - 5]
     get_time(tweet_file_name, award_names)
 
-    time_award = load_tweets(file_namw_wth_json + "_award_time.json")
+    time_award = load_tweets(file_name_wth_json + "_award_time.json")
 
     tweets = load_tweets(tweet_file_name)
 
     nominate_tweets = nominate_data(tweets)
+    nominees = {}
     i = 1
     for name in award_names:
         award = Award(i, name, 'actor')
         i = i+1
         time_happen = int(time_award[name])
         nominees_dict = find_nominees(nominate_tweets, award, time_happen)
-        print(name + " Nominees: \n")
-        print('\n')
+        #print(name + " Nominees: \n")
+        #print('\n')
         # nominees_dict = {key: val for key, val in nominees_dict.items() if val >= 11}
+        def_not_nominees = ["#GoldenGlobes", "Golden Globes", "GoldenGlobes", "Grammys", "Emmys", "oscar", "Oscar"]
+        nominees_dict = {key: val for key, val in nominees_dict.items() if (val != -1 and (key.lower() not in name.lower() or key not in def_not_nominees))}
         new_dict = {}
         j = 0
         for key in nominees_dict:
-            if j < 1:
+            if j < 5:
                 new_dict[key] = nominees_dict[key]
                 j += 1
             else:
                 break
-        nominees_for_award(new_dict)
-        # nominees = nominees_for_award(nominees_dict)
-        '''
-        print(name + " Nominees: ")
-        for nominee in nominees:
-            print(nominee)
-            print('\n')
-        '''
+        #nominees_for_award(new_dict)
+        nominee = [key.lower() for key in new_dict.keys()]
+        nominees[name] = nominee
+    with open("data/nominees_" + file_name_wth_json + ".json", "w") as outfile:
+        json.dump(nominees, outfile)
+    return nominees
 
 
 def main():

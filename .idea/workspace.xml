@@ -3,9 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="9c4c2b40-cacc-40b4-9795-da3ccccf29ff" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/nominees_gg2013_clean.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/nominees_gg2013_clean.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/nominees_gg2015_clean.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/nominees_gg2015_clean.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/get_nominees.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_nominees.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_presenter.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_presenter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/get_winners.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_winners.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nltkex.py" beforeDir="false" afterPath="$PROJECT_DIR$/nltkex.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,8 +150,8 @@
       <list>
         <item itemvalue="Python.get_nominees" />
         <item itemvalue="Python.get_nominees_2" />
-        <item itemvalue="Python.get_winners" />
         <item itemvalue="Python.nltkex" />
+        <item itemvalue="Python.get_winners" />
         <item itemvalue="Python.get_presenter" />
       </list>
     </recent_temporary>
@@ -210,38 +212,38 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="137" y="18" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1651608804345" />
-    <state width="1345" height="161" key="GridCell.Tab.0.bottom" timestamp="1652839383515">
+    <state width="1345" height="186" key="GridCell.Tab.0.bottom" timestamp="1652848144187">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="161" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1652839383515" />
-    <state width="1345" height="161" key="GridCell.Tab.0.center" timestamp="1652839383515">
+    <state width="1345" height="186" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1652848144187" />
+    <state width="1345" height="186" key="GridCell.Tab.0.center" timestamp="1652848144186">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="161" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1652839383515" />
-    <state width="1345" height="161" key="GridCell.Tab.0.left" timestamp="1652839383514">
+    <state width="1345" height="186" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1652848144186" />
+    <state width="1345" height="186" key="GridCell.Tab.0.left" timestamp="1652848144186">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="161" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1652839383514" />
-    <state width="1345" height="161" key="GridCell.Tab.0.right" timestamp="1652839383515">
+    <state width="1345" height="186" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1652848144186" />
+    <state width="1345" height="186" key="GridCell.Tab.0.right" timestamp="1652848144186">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="161" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1652839383515" />
-    <state width="1345" height="161" key="GridCell.Tab.1.bottom" timestamp="1652839392843">
+    <state width="1345" height="186" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1652848144186" />
+    <state width="1345" height="161" key="GridCell.Tab.1.bottom" timestamp="1652846985850">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="161" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1652839392843" />
-    <state width="1345" height="161" key="GridCell.Tab.1.center" timestamp="1652839392843">
+    <state width="1345" height="161" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1652846985850" />
+    <state width="1345" height="161" key="GridCell.Tab.1.center" timestamp="1652846985850">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="161" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1652839392843" />
-    <state width="1345" height="161" key="GridCell.Tab.1.left" timestamp="1652839392843">
+    <state width="1345" height="161" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1652846985850" />
+    <state width="1345" height="161" key="GridCell.Tab.1.left" timestamp="1652846985850">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="161" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1652839392843" />
-    <state width="1345" height="161" key="GridCell.Tab.1.right" timestamp="1652839392843">
+    <state width="1345" height="161" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1652846985850" />
+    <state width="1345" height="161" key="GridCell.Tab.1.right" timestamp="1652846985850">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="161" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1652839392843" />
+    <state width="1345" height="161" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1652846985850" />
     <state x="184" y="6" key="SettingsEditor" timestamp="1651609175721">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -256,43 +258,43 @@
       <breakpoints>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>279</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>118</line>
+          <line>123</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>122</line>
+          <line>127</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>189</line>
+          <line>194</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>150</line>
+          <line>155</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>124</line>
+          <line>129</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>148</line>
+          <line>153</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/get_nominees.py</url>
-          <line>205</line>
+          <line>211</line>
           <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/get_nominees_2.py</url>
+          <line>292</line>
+          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

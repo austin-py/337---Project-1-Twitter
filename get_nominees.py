@@ -1,3 +1,5 @@
+from english_words import english_words_lower_alpha_set
+
 from award_time import get_time
 from json_reader import *
 from classes import *
@@ -8,6 +10,7 @@ from nltk import ne_chunk, pos_tag, word_tokenize
 from nltk.tree import Tree
 nlp = spacy.load("en_core_web_sm")
 from difflib import SequenceMatcher
+
 
 def clean_award_name(name):
     # clean award name into tokens of important words
@@ -80,6 +83,7 @@ def related_to_award(text, award):
     return False
     '''
 
+
 def sort_dict(dictionary):
     """
     Input:
@@ -92,6 +96,7 @@ def sort_dict(dictionary):
     for k in sorted_keys:
         sorted_dict[k] = dictionary[k]
     return sorted_dict
+
 
 # caller function will manage splitting text, this function will only look at sentence chunks
 def nominee_candidates(text, cand_dict, paf):
@@ -191,6 +196,7 @@ def find_nominees(data, award, time_award):
             for sentence in sentences:
                 # sentence = sentence.lower() #this would make name recognition impossible using nltk
                 nominee_candidates(sentence, potential_nominees, person_award_flag)
+    clean_similar_noms(potential_nominees)
     potential_nominees = sort_dict(potential_nominees)
     return potential_nominees
     #return clean_similar_noms(potential_nominees)
@@ -203,7 +209,7 @@ def similar(a, b):
 def clean_similar_noms(nom_dict):
     for candi in nom_dict:
         for candj in nom_dict:
-            if similar(candi, candj) >= .54 and candi != candj and (nom_dict[candi] != -1 and nom_dict[candj] != -1):
+            if similar(candi, candj) >= .4 and candi != candj and (nom_dict[candi] != -1 and nom_dict[candj] != -1):
                 if nom_dict[candi] > nom_dict[candj]:
                     nom_dict[candi] += nom_dict[candj]
                     nom_dict[candj] = -1
@@ -214,6 +220,7 @@ def clean_similar_noms(nom_dict):
 def nominees_for_award(nom_dict):
     for nom in nom_dict:
         print(nom, nom_dict[nom])
+
 
 def find_nominate(words):
     """
@@ -251,23 +258,26 @@ def nominate_data(tweets):
 
 def get_nominee_all_awards(tweet_file_name, award_names):
     file_name_length = len(tweet_file_name)
-    file_namw_wth_json = tweet_file_name[0:file_name_length - 5]
+    file_name_wth_json = tweet_file_name[0:file_name_length - 5]
     get_time(tweet_file_name, award_names)
 
-    time_award = load_tweets(file_namw_wth_json + "_award_time.json")
+    time_award = load_tweets(file_name_wth_json + "_award_time.json")
 
     tweets = load_tweets(tweet_file_name)
 
     nominate_tweets = nominate_data(tweets)
+    nominees = {}
     i = 1
     for name in award_names:
         award = Award(i, name, 'actor')
         i = i+1
         time_happen = int(time_award[name])
         nominees_dict = find_nominees(nominate_tweets, award, time_happen)
-        print(name + " Nominees: \n")
-        print('\n')
+        #print(name + " Nominees: \n")
+        #print('\n')
         # nominees_dict = {key: val for key, val in nominees_dict.items() if val >= 11}
+        def_not_nominees = ["#GoldenGlobes", "Golden Globes", "GoldenGlobes", "Grammys", "Emmys", "oscar", "Oscar"]
+        nominees_dict = {key: val for key, val in nominees_dict.items() if (val != -1 and (key.lower() not in name.lower() or key not in def_not_nominees))}
         new_dict = {}
         j = 0
         for key in nominees_dict:
@@ -276,14 +286,12 @@ def get_nominee_all_awards(tweet_file_name, award_names):
                 j += 1
             else:
                 break
-        nominees_for_award(new_dict)
-        # nominees = nominees_for_award(nominees_dict)
-        '''
-        print(name + " Nominees: ")
-        for nominee in nominees:
-            print(nominee)
-            print('\n')
-        '''
+        #nominees_for_award(new_dict)
+        nominee = [key.lower() for key in new_dict.keys()]
+        nominees[name] = nominee
+    with open("data/nominees_" + file_name_wth_json + ".json", "w") as outfile:
+        json.dump(nominees, outfile)
+    return nominees
 
 
 def main():

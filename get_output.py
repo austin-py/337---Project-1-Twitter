@@ -1,7 +1,6 @@
 import json
 import sys
 
-import get_nominees
 from json_reader import load_tweets, clean_and_save
 from host_parser import get_host
 from get_awards import return_awards, get_best_dressed, get_worst_dressed

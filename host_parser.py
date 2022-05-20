@@ -50,7 +50,7 @@ def get_host_majority_vote(tweets):
                             present_result[ngram] += 1
                         else:
                             present_result[ngram] = 1
-            if w == 'hosting':
+            elif w == 'hosting':
                 result = get_host_rule_present_participle(t_cleaned, 'hosting')
                 if result is not None:
                     for ngram in result:
@@ -58,7 +58,7 @@ def get_host_majority_vote(tweets):
                             present_participle_result[ngram] += 1
                         else:
                             present_participle_result[ngram] = 1
-            if w == 'hosts':
+            elif w == 'hosts':
                 result = get_host_rule_plural_noun(t_cleaned, 'hosts')
                 if result is not None:
                     for ngram in result:
@@ -66,7 +66,7 @@ def get_host_majority_vote(tweets):
                             plural_noun_result[ngram] += 1
                         else:
                             plural_noun_result[ngram] = 1
-            if w == 'hosted':
+            elif w == 'hosted':
                 # passive result included
                 result = get_host_rule_past_tense(t_cleaned, 'hosted')
                 if result is not None:
@@ -111,18 +111,6 @@ def rank_and_select_final_answers(*args):
 
     return final_top_2_answers
 
-###current performance by top_n = 10
-    # gg2013_clean.json:
-    # ['Tina Fey', 'Amy Poehler', 'Will Ferrell', 'Kristen Wiig', 'Tina Fey Amy', 'Tina Fey Amy Poelhers',
-    #  'Tina Fey Amy Poelhers Opening', 'Tina Fey Amy Poelhers Opening Monologue', 'should Will Ferrell',
-    #  'Poehler should']
-
-    # gg2015_clean.json:
-    # ['Tina Fey', 'Amy Poehler', 'Kristen Wiig', 'Tackle Tough', 'Tackle Tough Topics', 'Tackle Tough Topics With',
-    #  'Tackle Tough Topics With Comedy', 'theyre also Sisters', 'Tackle Tough Topics With Comedy ABC',
-    #  'theyre also Sisters in']
-
-
 
 def print_host_by_form(input_tweet, form):
     #host_forms = ['host', 'hosts', 'hosting', 'hosted']
@@ -134,12 +122,11 @@ def get_host_rule_present(cleaned_tweet, form):
     if form.lower() != 'host':
         print("Wrong rule \'host\' implemented for form: {}".format(form))
         return None
-
     end = cleaned_tweet.lower().index('host')
     subtweet = cleaned_tweet[:end]
     words = subtweet.split()
     candidate_answers = []
-    # from index of 'host' to the beginning
+    # check from right to left
     for i in range(len(words)-1, -1, -1):
         candidate_answer = ' '.join(words[i:len(words)])
         if any(char.isupper() for char in candidate_answer):
@@ -148,14 +135,14 @@ def get_host_rule_present(cleaned_tweet, form):
                 if 'and' in candidate_answer.lower():
                     answers = candidate_answer.split('and')
                     for ans in answers:
-                        if len(ans) == 0 or len(ans.split()) < 2:
+                        if len(ans.split()) < 2:
                             continue
                         ans_stripped = ans.strip()
                         if not ans_stripped in candidate_answers:
                             candidate_answers.append(ans_stripped)
                 else:
                     candidate_answers.append(candidate_answer)
-            if length > 5:
+            if length > 4:
                 return candidate_answers
 
     return candidate_answers
@@ -164,12 +151,14 @@ def get_host_rule_present_participle(cleaned_tweet, form):
     if form.lower() != 'hosting':
         print("Wrong rule \'hosting\' implemented for form: {}".format(form))
         return None
+    # get start location of first occurrence of 'hosting'
     end = cleaned_tweet.lower().index('hosting')
     subtweet = cleaned_tweet[:end]
     words = subtweet.split()
     if len(words) == 0:
         return None
     try:
+        # true last word is neither 'are' nor 'were'
         if words[len(words)-1].lower() != 'are' and words[len(words)-1] != 'were':
         # print('Unexpected word before hosting: {}'.format(words[len(words)-1]))
         # print(input_tweet)
@@ -180,7 +169,7 @@ def get_host_rule_present_participle(cleaned_tweet, form):
         print('A problem has occured: ', e)
 
     candidate_answers = []
-    # from index of 'are' to the beginning
+    # check from index of 'are' or 'were to the left
     for i in range(len(words)-2, -1, -1):
         candidate_answer = ' '.join(words[i:len(words)-1])
         if any(char.isupper() for char in candidate_answer):
@@ -189,14 +178,14 @@ def get_host_rule_present_participle(cleaned_tweet, form):
                 if 'and' in candidate_answer.lower():
                     answers = candidate_answer.split('and')
                     for ans in answers:
-                        if len(ans) == 0 or len(ans.split()) < 2:
+                        if len(ans.split()) < 2:
                             continue
                         ans_stripped = ans.strip()
                         if not ans_stripped in candidate_answers:
                             candidate_answers.append(ans_stripped)
                 else:
                     candidate_answers.append(candidate_answer)
-            if length > 5:
+            if length > 4:
                 return candidate_answers
     return candidate_answers
 
@@ -205,11 +194,12 @@ def get_host_rule_plural_noun(cleaned_tweet, form):
     if form.lower() != 'hosts':
         print("Wrong rule \'hosts\' implemented for form: {}".format(form))
         return None
+    # get end location of first occurrence of 'hosts'
     start = cleaned_tweet.lower().index('hosts') + len('hosts')
     subtweet = cleaned_tweet[start:]
     words = subtweet.split()
     candidate_answers = []
-    # from index of 'hosts' to the beginning
+
     for i in range(len(words)):
         candidate_answer = ' '.join(words[0:i+1])
         if any(char.isupper() for char in candidate_answer):
@@ -218,14 +208,14 @@ def get_host_rule_plural_noun(cleaned_tweet, form):
                 if 'and' in candidate_answer.lower():
                     answers = candidate_answer.split('and')
                     for ans in answers:
-                        if len(ans) == 0 or len(ans.split()) < 2:
+                        if len(ans.split()) < 2:
                             continue
                         ans_stripped = ans.strip()
                         if not ans_stripped in candidate_answers:
                             candidate_answers.append(ans_stripped)
                 else:
                     candidate_answers.append(candidate_answer)
-            if length > 5:
+            if length > 4:
                 return candidate_answers
     return candidate_answers
 
@@ -240,7 +230,8 @@ def get_host_rule_past_tense(cleaned_tweet, form):
     subtweet = cleaned_tweet[:end]
     words = subtweet.split()
     candidate_answers = []
-    # from index of 'hosts' to the beginning
+
+    # right to left
     for i in range(len(words)-1, -1, -1):
         candidate_answer = ' '.join(words[i:end])
         if any(char.isupper() for char in candidate_answer):
@@ -249,14 +240,14 @@ def get_host_rule_past_tense(cleaned_tweet, form):
                 if 'and' in candidate_answer.lower():
                     answers = candidate_answer.split('and')
                     for ans in answers:
-                        if len(ans) == 0 or len(ans.split()) < 2:
+                        if len(ans.split()) < 2:
                             continue
                         ans_stripped = ans.strip()
                         if not ans_stripped in candidate_answers:
                             candidate_answers.append(ans_stripped)
                 else:
                     candidate_answers.append(candidate_answer)
-            if length > 5:
+            if length > 4:
                 return candidate_answers
     return candidate_answers
 
@@ -268,7 +259,7 @@ def get_host_rule_passive(cleaned_tweet, form):
     subtweet = cleaned_tweet[start:]
     words = subtweet.split()
     candidate_answers = []
-    # from index of 'hosts' to the beginning
+
     for i in range(len(words)):
         candidate_answer = ' '.join(words[0:i+1])
         if any(char.isupper() for char in candidate_answer):
@@ -277,14 +268,14 @@ def get_host_rule_passive(cleaned_tweet, form):
                 if 'and' in candidate_answer.lower():
                     answers = candidate_answer.split('and')
                     for ans in answers:
-                        if len(ans) == 0 or len(ans.split()) < 2:
+                        if len(ans.split()) < 2:
                             continue
                         ans_stripped = ans.strip()
                         if not ans_stripped in candidate_answers:
                             candidate_answers.append(ans_stripped)
                 else:
                     candidate_answers.append(candidate_answer)
-            if length > 5:
+            if length > 4:
                 return candidate_answers
     return candidate_answers
 
